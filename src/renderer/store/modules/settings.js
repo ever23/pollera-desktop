@@ -47,10 +47,10 @@ export default
         fetch(context,data)
         { 
              //context.commit('loading',true);
-             return axios.get('/polleras/api/settings/settings')
+            return axios.get('/settings/settings')
                         .then(req => 
                         {
-                        	context.commit("update", req.data.settings); 
+                            context.commit("update", req.data.settings); 
                             return req.data;
                            // console.log( request.data,typeof request.data);
                         });

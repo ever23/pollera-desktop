@@ -11,26 +11,26 @@
 	          <div class="tile">
 	            <h3 class="tile-title">{{ type }} empleados</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	                <div class="form-group">
 	                  <label class="control-label">C.I </label>
-	                  <input class="form-control" v-model="empleados.ci_empleado" required type="text" placeholder="C.I" :disabled="type=='Editar'" maxlength="8">
+	                  <input class="form-control" v-model="empleados.ci_empleado" name="ci_empleado" required type="text" placeholder="C.I" :disabled="type=='Editar'" maxlength="8">
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Nombres </label>
-	                  <input class="form-control" v-model="empleados.nombres" required type="text" placeholder="Nombres">
+	                  <input class="form-control" v-model="empleados.nombres" name="nombres" required type="text" placeholder="Nombres">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Apellidos</label>
-	                  <input class="form-control" v-model="empleados.apellidos" required type="text" placeholder="Apellidos">
+	                  <input class="form-control" v-model="empleados.apellidos" name="apellidos" required type="text" placeholder="Apellidos">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Sueldo</label>
-	                  <input class="form-control" v-model="empleados.sueldo" required type="text" :placeholder="'Sueldo '+settings.moneda"> 
+	                  <input class="form-control" v-model="empleados.sueldo" name="sueldo" required type="text" :placeholder="'Sueldo '+settings.moneda"> 
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label ">Cargo</label>
-	                  <select class="form-control" v-model="empleados.cargo" required>
+	                  <select class="form-control" v-model="empleados.cargo" name="cargo" required>
 	                  <option value='obrero'>Obrero</option>
 	                  <option value="supervisor">Supervisor</option>
 	                  </select>
@@ -41,7 +41,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -71,6 +71,7 @@ import axios from 'axios';
 					Submited:1
 				},
 				type:'Agregar',
+				errores:{}
 				
 				
 			
@@ -83,7 +84,7 @@ import axios from 'axios';
 			if(this.empleados.ci_empleado)
 			{
 				 this.$store.commit('loading',true);
-				axios.get('/polleras/api/empleados/?ci_empleado='+this.ci_empleado).then(req=>
+				axios.get('/empleados/?ci_empleado='+this.ci_empleado).then(req=>
 				{
 					 this.$store.commit('loading',false);
 					if(req.data.empleados.length==0)
@@ -124,12 +125,12 @@ import axios from 'axios';
 				let url='',p='';
 				if(this.type=='Agregar')
 				{
-					url='/polleras/api/empleados/insertar';
+					url='/empleados/insertar';
 					p='agregado'
 
 				}else
 				{
-					url='/polleras/api/empleados/editar';
+					url='/empleados/editar';
 					p='editado'
 				}
 				 this.$store.commit('loading',true);
@@ -151,7 +152,7 @@ import axios from 'axios';
                              
                     }else
                     {
-                        AxiosCatch(request.data.error);
+                        this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

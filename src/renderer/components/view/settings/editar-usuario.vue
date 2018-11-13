@@ -1,22 +1,22 @@
 <template>
 	<div>
 		<h3> Editar usuario</h3>
-		<form @submit.prevent="editar">
+		<formulario :error="errores"   @submit.prevent="editar">
             <div class="form-group">
                 <label class="control-label">Nombres</label>
-                <input class="form-control" v-model="user.nombres" type="text" placeholder="Nombres">
+                <input class="form-control" v-model="user.nombres" name="nombres" type="text" placeholder="Nombres">
             </div>
             <div class="form-group">
                 <label class="control-label">Apellidos</label>
-                <input class="form-control" v-model="user.apellidos" type="text" placeholder="Apellidos">
+                <input class="form-control" v-model="user.apellidos" name="apellidos" type="text" placeholder="Apellidos">
             </div>
             <div class="form-group">
                 <label class="control-label">Nombre de usuario</label>
-                <input class="form-control" v-model="user.user" type="text" placeholder="Nombre de usuario">
+                <input class="form-control" v-model="user.user" name="user" type="text" placeholder="Nombre de usuario">
             </div>
              <div class="form-group" v-if="isRoot">
 	                  <label class="control-label">Permisos</label>
-	                  <select class="form-control"  name="perm_user" v-model="user.permisos">
+	                  <select class="form-control"  v-model="user.permisos" name="permisos">
 	                	<option value="root">Root</option>
 	                	<option value="admin">Administrador</option>
 	                  </select>
@@ -27,7 +27,7 @@
 	              </button>
 	                          
 	         </div>
-        </form>
+        </formulario>
   	</div>
 </template>
 <script>
@@ -49,14 +49,15 @@ import axios from 'axios'
 					
 					
 					Submited:1
-				}
+				},
+				errores:{}
 			}
 		},
 		created()
 		{
 			this.user.id_usuarios=this.id_usuarios;
 			 this.$store.commit('loading',true);
-			axios.get('/polleras/api/user/user?id_usuarios='+this.id_usuarios).
+			axios.get('/user/user?id_usuarios='+this.id_usuarios).
 			then((req)=>
 			{
 				 this.$store.commit('loading',false);
@@ -78,7 +79,7 @@ import axios from 'axios'
 			editar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/user/editar',this.user).
+				axios.post('/user/editar',this.user).
 				then((request)=>
 				{
 					 this.$store.commit('loading',false);
@@ -93,17 +94,19 @@ import axios from 'axios'
 
                         },
                         ()=>{
+                        	this.$store.commit('Login',request.data.data);
                         	if(this.id_usuario==this.$store.getters.User.id_usuario)
                         	{
                         		this.$router.push({name:'perfil'});
                         	}else
                         	{
+
                         		this.$router.push({name:'usuarios'});
                         	}                      	 
                         });
 					}else
 					{
-						AxiosCatch(request.data.error);
+						this.errores=request.data.error;
 					}
 				}).catch(AxiosCatch);
 			}

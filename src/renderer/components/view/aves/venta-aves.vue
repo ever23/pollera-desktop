@@ -7,26 +7,26 @@
 	          <div class="tile">
 	            <h3 class="tile-title">Venta de aves</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	                <div class="form-group">
-	               	<select-galpon @change="galpon" :id_galpon="idgalpon"></select-galpon>
+	               	<select-galpon @change="galpon" :id_galpon="idgalpon" :filter="g=>g.aves>0"/>
 	               </div>
 	                <div class="form-group">
 	                  <label class="control-label">Cantidad </label>
-	                  <input class="form-control" v-model="aves.cantidad" required type="text" placeholder="Cantidad">
+	                  <input class="form-control" v-model="aves.cantidad" name="cantidad" required type="text" placeholder="Cantidad">
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Precio por unidad</label>
-	                  <input class="form-control" v-model="aves.costo" required type="text" :placeholder="'Precio '+settings.moneda">
+	                  <input class="form-control" v-model="aves.costo" name="costo" required type="text" :placeholder="'Precio '+settings.moneda">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">fecha</label>
-	                  <input class="form-control" v-model="aves.fecha" required type="date" placeholder="fecha">
+	                  <input class="form-control" v-model="aves.fecha" name="fecha" required type="date" placeholder="fecha">
 	                </div>
 	               
 	                <div class="form-group" >
 	                  <label class="control-label">Detalles</label>
-	                  <textarea class="form-control" v-model="aves.detalles" required placeholder="Detalles"></textarea>
+	                  <textarea class="form-control" v-model="aves.detalles" name="detalles" required placeholder="Detalles"></textarea>
 	                  
 	                </div>
 	               
@@ -34,7 +34,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -69,6 +69,7 @@ import select_galpon from '../galpones/select-galpon.vue'
 					detalles:null,
 					Submited:1
 				},
+				errores:{}
 			
 			
 
@@ -99,7 +100,7 @@ import select_galpon from '../galpones/select-galpon.vue'
 			Enviar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/aves/venta',this.aves)
+				axios.post('/aves/venta',this.aves)
                 .then(request => 
                 {
                 	 this.$store.commit('loading',false);
@@ -117,7 +118,7 @@ import select_galpon from '../galpones/select-galpon.vue'
                              
                     }else
                     {
-                        AxiosCatch(request.data.error);
+                        this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

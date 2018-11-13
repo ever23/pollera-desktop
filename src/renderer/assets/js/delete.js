@@ -20,7 +20,7 @@ export default  function(tabla,name,value)
                   { 
                     let data={tabla:tabla,name:name,value:value};
                     store.commit('loading',true);
-                    axios.post('/polleras/api/index/Delete',data)
+                    axios.post('/index/Delete',data)
                     .then(request=>
                     {
                     	store.commit('loading',false);

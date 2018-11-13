@@ -12,7 +12,7 @@ var NumberFormat=function(data)
 			if(Number(PFarray[2])>=5)
 			{
 				PFarray[1]=Number(PFarray[1])+1;
-			}else
+			}else if(Number(PFarray[1])!=0)
 			{
 				PFarray[1]=Number(PFarray[1])-1;
 			}
@@ -27,12 +27,19 @@ var NumberFormat=function(data)
 		
 
 
-		return Decimal+'.'+PuntoFlotante;
+		return (Decimal=='undefined'?0:Decimal)+'.'+PuntoFlotante;
 	}
-	
-	var Filtros={
-		NumberFormat:(NumberFormat),
-		BsSFormat:(data)=> NumberFormat(data)+' '+$store.getters.settings.moneda,
-		AlimFormat:(data)=>NumberFormat(data)+' '+$store.getters.settings.umalimentos
-	}
-export default Filtros
+/*var DateFormat=(data)
+{
+
+} 
+
+var DateTimeFormat=(data)
+{
+
+}*/
+export default {
+	NumberFormat:(NumberFormat),
+	BsSFormat:(data)=> NumberFormat(data)+' '+$store.getters.settings.moneda,
+	AlimFormat:(data)=>NumberFormat(data)+' '+$store.getters.settings.umalimentos
+}

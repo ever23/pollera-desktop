@@ -27,7 +27,7 @@
                <a href="#" :class="['nav-link',active.consumos]" @click.prevent="list('consumos')"><i class="fa fa-shopping-basket"></i> Consumos</a>     
               </li>
               <li class="nav-item" >
-               <a href="#" :class="['nav-link',active.reporte]" @click.prevent="list('reporte')"><i class="fa fa-file-pdf-o"></i> Reporte</a>     
+               <a href="#" :class="['nav-link',active.reporte]" @click.prevent="pdf=!pdf "><i class="fa fa-file-pdf-o"></i> Reporte</a>     
               </li>
                
             </ul>
@@ -38,7 +38,7 @@
             
             <div v-if="resumen('inventario')" class="compras tile">
                 <h4 class="tile-header">Inventario de Medicinas</h4>
-                 <list-medicinas :medicinas="medicinas" @change="load(null)"></list-medicinas>
+                 <list-medicinas :medicinas="medicinas" :galpon="galpon" @change="load(null)"></list-medicinas>
               </div>
               <div v-if="resumen('compras')" class="compras tile">
                 <h4 class="tile-header">Compras de Medicinas</h4>
@@ -48,7 +48,7 @@
                 <h4 class="tile-header">Consumos de Medicinas</h4>
            <list-consumos-medicinas :consumos="consumos"  @change="load(null)"></list-consumos-medicinas>
               </div>
-              <show-pdf v-if="resumen('reporte')" :src="'/polleras/api/medicinas/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" ></show-pdf>
+              <iframe id="iframe" v-if="pdf" :src="basepath+'/medicinas/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" class="iframe-hide"></iframe>
             
           </div>
         </div>
@@ -73,7 +73,7 @@
         props:['id_galpon'],
         data () {
             return {
-              
+               pdf:false,
               active:
                 {
                   compras:null,consumos:null,inventario:'active',reporte:null
@@ -88,16 +88,7 @@
                 
             }
         },
-        updated()
-        {
-          $(document).ready(e=>{
-            $('#list_compras_medicinas').DataTable();
-          $('#list_consumos_medicinas').DataTable();
-           $('#list_medicinas').DataTable();
-           
-          });
-           
-        },
+        
         created()
         {
             if(this.id_galpon)
@@ -115,7 +106,11 @@
         },
         computed:
         {
-         
+           
+            basepath()
+            {
+              return this.$store.getters.localSettings.basePath;
+            }
         },
         methods:
         {
@@ -123,14 +118,14 @@
           {
             if(this.id_galpon)
             {
-              axios.get('/polleras/api/galpones/?id_galpon='+this.id_galpon).then(req=>
+              axios.get('/galpones/?id_galpon='+this.id_galpon).then(req=>
               {
                   this.galpon=req.data.galpones[0];
               }).catch(AxiosCatch);
             }
              this.query=data;
              this.$store.commit('loading',true);
-            axios.get('/polleras/api/medicinas/resumen?'+data+(this.id_galpon?'&id_galpon='+this.id_galpon:''))
+            axios.get('/medicinas/resumen?'+data+(this.id_galpon?'&id_galpon='+this.id_galpon:''))
             .then(request=>
             {
                this.$store.commit('loading',false);
@@ -167,6 +162,10 @@
 </script>
 
 <style>
+.iframe-hide
+{
+  display: none;
+}
     .portfolio-btn
     {
       margin: -1.25rem -1.25rem;

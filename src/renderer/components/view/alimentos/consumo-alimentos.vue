@@ -7,23 +7,26 @@
 	            <h3 class="tile-title">Consumo de alimentos 
 	            balanceados</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	               <div class="form-group">
-	               <select-galpon @change="galpon" :id_galpon="idgalpon"></select-galpon>
+	               <select-galpon @change="galpon" :id_galpon="idgalpon" :filter="g=>g.aves>0"/>
 	               </div>
 	                <div class="form-group">
 	                  <label class="control-label">Cantidad </label>
-	                  <input class="form-control" v-model="alimentos.cantidad" required type="text" placeholder="Cantidad">
+	                  <div class="btn-group form-control form-group cantidad-max">
+	                  <input class="form-control" v-model="alimentos.cantidad" name="cantidad" required type="text" placeholder="Cantidad">
+	                   <button class="btn btn-primary btn-sm" @click.prevent="alimentos.cantidad=alimentos.max_cantidad">Max</button>
+	                   </div>
 	                </div>
 	                 
 	                <div class="form-group">
 	                  <label class="control-label">fecha</label>
-	                  <input class="form-control" v-model="alimentos.fecha" required type="date" placeholder="fecha">
+	                  <input class="form-control" v-model="alimentos.fecha" name="fecha" required type="datetime-local" placeholder="fecha" @change="fecha">
 	                </div>
 	                <div class="form-group">
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	                </div>
-	              </form>
+	              </formulario>
 	            </div> 
 	          </div>
         	</div>
@@ -33,7 +36,9 @@
 <script>
 import axios from 'axios';
 import select_galpon from '../galpones/select-galpon.vue'
-import {fecha} from '../../../assets/js/Date.js'
+import {fecha,hora} from '../../../assets/js/Date.js'
+ import filter from '../../../assets/js/UserVueFilter.js'
+
 	export default
 	{
 		name:'consumo-alimentos',
@@ -50,11 +55,11 @@ import {fecha} from '../../../assets/js/Date.js'
 				{
 					id_galpon:null,
 					cantidad:null,
-					fecha:fecha(),
-					
+					fecha:fecha()+'T'+hora(),
+					max_cantidad:null,
 					Submited:1
 				},
-				
+				errores:{}
 			
 
 			}
@@ -68,9 +73,40 @@ import {fecha} from '../../../assets/js/Date.js'
 		},
 		methods:
 		{
+			
+			fecha(fecha)
+			{
+				this.fetch(this.alimentos.id_galpon,this.alimentos.fecha.replace('T',' ')+':00');
+			},
 			galpon(id_galpon)
 			{
 				this.alimentos.id_galpon=id_galpon;
+				this.fetch(id_galpon);
+			},
+			fetch(id_galpon,fecha)
+			{
+				this.$store.commit('loading',true);
+				axios.get('/galpones/?id_galpon='+id_galpon+(fecha?'&fecha='+fecha:'')).then(req=>
+				{
+					 this.$store.commit('loading',false);
+					if(req.data.galpones.length!=1)
+					{
+						AxiosCatch("El galpon no existe");
+					}else
+					{
+						
+						let max_consumo=Number(req.data.galpones[0].consumo)*Number(req.data.galpones[0].aves);
+						this.alimentos.max_cantidad=filter.NumberFormat(max_consumo-req.data.galpones[0].consumo_dia);
+						if(req.data.galpones[0].consumo_dia==0)
+						{
+							max_consumo=max_consumo/2;
+						}
+						this.alimentos.cantidad=filter.NumberFormat(max_consumo-req.data.galpones[0].consumo_dia)
+						//this.alimentos.max_cantidad
+						
+						
+					}
+				}).catch(AxiosCatch);
 			},
 			Cancelar()
 			{
@@ -81,10 +117,13 @@ import {fecha} from '../../../assets/js/Date.js'
 			Enviar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/alimentos/consumo',this.alimentos)
+				 let fecha=this.alimentos.fecha;
+				 this.alimentos.fecha=this.alimentos.fecha.replace('T',' ')+':00'
+				axios.post('/alimentos/consumo',this.alimentos)
                 .then(request => 
                 {
                 	 this.$store.commit('loading',false);
+                	 this.alimentos.fecha=fecha;
                     if(request.data.insert)
                     {
                         //swal("Listo!", "El proyecto se ha almacenado ", "success");
@@ -95,11 +134,11 @@ import {fecha} from '../../../assets/js/Date.js'
                             type: "success",
 
                         },
-                        ()=>this.$router.push({name:'resumen-alimentos'}));
+                        ()=>this.$router.push({name:'resumen-alimentos-galpon',params:{id_galpon:this.alimentos.id_galpon}}));
                              
                     }else
                     {
-                        AxiosCatch(request.data.error);
+                        this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}
@@ -107,3 +146,10 @@ import {fecha} from '../../../assets/js/Date.js'
 	}
 
 </script>
+<style scope>
+	.cantidad-max
+	{
+		padding: 0px!important;
+    	border: none!important;
+	}
+</style>

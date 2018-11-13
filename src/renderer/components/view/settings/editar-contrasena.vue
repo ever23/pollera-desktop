@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<h3> Editar contraseña</h3>
-		<form @submit.prevent="editar">
+		<formulario :error="errores"   @submit.prevent="editar">
             <div class="form-group">
                 <label class="control-label">Contraseña anterior</label>
-                <input class="form-control" v-model="user.pass" type="password" placeholder="contraseña">
+                <input class="form-control" v-model="user.pass" name="pass" type="password" placeholder="contraseña">
             </div>
            
             <div class="form-group">
@@ -21,7 +21,7 @@
 	              </button>
 	                          
 	         </div>
-        </form>
+        </formulario>
   	</div>
 </template>
 <script>
@@ -39,7 +39,8 @@ import axios from 'axios'
 			        pass1:null,
 			        pass2:null,
 			        Submited:1
-				}
+				},
+				errroes:{}
 			}
 		},
 		created()
@@ -51,7 +52,7 @@ import axios from 'axios'
 			editar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/user/CambiarContrasena',this.user).
+				axios.post('/user/CambiarContrasena',this.user).
 				then((request)=>
 				{
 					 this.$store.commit('loading',false);
@@ -71,7 +72,7 @@ import axios from 'axios'
 						
 					}else
 					{
-						AxiosCatch(request.data.error);
+						this.errores=request.data.error;
 					}
 				}).catch(AxiosCatch);
 			}

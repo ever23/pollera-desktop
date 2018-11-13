@@ -73,26 +73,13 @@
                
             }
         },
-        updated()
-        {
-          $(document).ready(e=>
-          {
-            $('#compras_alimentos').DataTable();
-            $('#consumos_alimentos').DataTable();
-            
-          });
-          
-          
-        },
+       
         created()
         {
             this.load();
             
         },
-        computed:
-        {
-         
-        },
+       
         methods:
         {
           change_meta(meta)
@@ -104,7 +91,7 @@
           {
             this.query=query;
              this.$store.commit('loading',true);
-            axios.get('/polleras/api/galpones/resumen?'+query)
+            axios.get('/galpones/resumen?'+query)
             .then(request=>
             {
                this.$store.commit('loading',false);

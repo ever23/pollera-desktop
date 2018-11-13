@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "Polleras",
-    "appId": "com.example.yourapp",
+    "productName": "CEPA",
+    "appId": "CEPA.desktop.app",
     "directories": {
       "output": "build"
     },

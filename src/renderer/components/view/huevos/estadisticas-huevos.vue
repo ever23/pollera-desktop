@@ -39,11 +39,35 @@
 
   </div>
  <div class="row">
-        <div :class="'col-md-12'">
+<div :class="'col-md-6'">
+          <div class="tile">
+            <h3 class="tile-title">Produccion de Huevos Grandes</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" ref="produccion_grande"></canvas>
+            </div>
+          </div>
+        </div>
+        <div :class="'col-md-6'">
+          <div class="tile">
+            <h3 class="tile-title">Produccion de Huevos Pequeños</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" ref="produccion_pequeno"></canvas>
+            </div>
+          </div>
+        </div>
+        <div :class="'col-md-6'">
           <div class="tile">
             <h3 class="tile-title">Produccion de Huevos</h3>
             <div class="embed-responsive embed-responsive-16by9">
               <canvas class="embed-responsive-item" ref="produccion"></canvas>
+            </div>
+          </div>
+        </div>
+         <div :class="'col-md-6'">
+          <div class="tile">
+            <h3 class="tile-title">Venta de Huevos</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" ref="ventas"></canvas>
             </div>
           </div>
         </div>
@@ -105,7 +129,43 @@
           },
           ejecutar()
             { 
-              
+              //console.log(this.estadisticas.produccion.filter(p=>p.tipo=="pequeño"),this.estadisticas.produccion)
+               let Cproduccion_grande=this.calculo(this.estadisticas.produccion.filter(p=>p.tipo=="grande"));
+              let Cproduccion_pequeno=this.calculo(this.estadisticas.produccion.filter(p=>p.tipo=="pequeño"));
+              //console.log(this.meta_query.query)
+                var muertes = new Chart(this.$refs.produccion_grande.getContext("2d")).Line({
+                      labels: Cproduccion_grande.labels,
+                      datasets: [
+                        {
+                          label: "Huevos grandes",
+                          fillColor: "rgb(23, 162, 184)", 
+                          strokeColor: "rgba(220,220,220,1)",
+                          pointColor: "rgba(220,220,220,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(220,220,220,1)",
+                          data: Cproduccion_grande.data
+                        }
+                      ]
+                    });
+            
+              //console.log(this.meta_query.query)
+                var muertes = new Chart(this.$refs.produccion_pequeno.getContext("2d")).Line({
+                      labels: Cproduccion_pequeno.labels,
+                      datasets: [
+                        {
+                          label: "Produccion",
+                          fillColor: "rgb(253, 126, 20)", 
+                          strokeColor: "rgba(220,220,220,1)",
+                          pointColor: "rgba(220,220,220,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(220,220,220,1)",
+                          data: Cproduccion_pequeno.data
+                        }
+                      ]
+                    });
+
               let Cproduccion=this.calculo(this.estadisticas.produccion);
               //console.log(this.meta_query.query)
                 var muertes = new Chart(this.$refs.produccion.getContext("2d")).Line({
@@ -113,13 +173,30 @@
                       datasets: [
                         {
                           label: "Produccion",
-                          fillColor: "rgb(220, 53, 69)",
+                          fillColor: "rgb(220, 53, 69)", 
                           strokeColor: "rgba(220,220,220,1)",
                           pointColor: "rgba(220,220,220,1)",
                           pointStrokeColor: "#fff",
                           pointHighlightFill: "#fff",
                           pointHighlightStroke: "rgba(220,220,220,1)",
                           data: Cproduccion.data
+                        }
+                      ]
+                    });
+              let Cventas=this.calculo(this.estadisticas.ventas);
+              //console.log(this.meta_query.query)
+                var muertes = new Chart(this.$refs.ventas.getContext("2d")).Line({
+                      labels: Cventas.labels,
+                      datasets: [
+                        {
+                          label: "Ventas",
+                          fillColor: "rgb(220, 53, 69)", 
+                          strokeColor: "rgba(220,220,220,1)",
+                          pointColor: "rgba(220,220,220,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(220,220,220,1)",
+                          data: Cventas.data
                         }
                       ]
                     });

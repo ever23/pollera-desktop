@@ -1,7 +1,7 @@
 <template> 
   <div class="login-box ">
     
-    <form class="login-form"  @submit.prevent="login">
+    <formulario :error="errores"   class="login-form"  @submit.prevent="login">
     <div class="login-head">
       <h4 class="text-center user-name">
       {{ usuario.nombres }} 
@@ -10,7 +10,7 @@
     </div>
       <div class="form-group">
         <label class="control-label">CONTRASEÑA</label>
-        <input class="form-control" v-model="pass" type="password" placeholder="Contraseña" >
+        <input class="form-control" v-model="pass" name="pass" type="password" placeholder="Contraseña" >
       </div>
        <div class="form-group">
             <div class="utility">
@@ -26,7 +26,7 @@
       </div>
 
 
-    </form>
+    </formulario>
     
   </div> 
 </template>
@@ -40,7 +40,7 @@
                 user:null,
                 pass:null,
                 recordar:false,
-                
+                errores:{}
             }
         },
        
@@ -70,7 +70,7 @@
                     this.$router.replace(!this.redirect?{name:'inicio'}:this.redirect)
                   }else
                   {
-                    AxiosCatch(data.error);
+                    this.errores=data.error;
                     
                   }
 

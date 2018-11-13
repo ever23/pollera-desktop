@@ -7,23 +7,23 @@
 	          <div >
 	            <h3 class="tile-title">Registrar Usuario</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	              <div class="form-group">
 	                  <label class="control-label">Nombres </label>
-	                  <input class="form-control" v-model="user.nombres" required type="text" placeholder="Nombre">
+	                  <input class="form-control" v-model="user.nombres" name="nombres" required type="text" placeholder="Nombre">
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Apellidos </label>
-	                  <input class="form-control" v-model="user.apellidos" required type="text" placeholder="Apellidos">
+	                  <input class="form-control" v-model="user.apellidos" name="apellidos" required type="text" placeholder="Apellidos">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Nombre de usuario </label>
-	                  <input class="form-control" v-model="user.user" required type="text" placeholder="Nombre de usuarios">
+	                  <input class="form-control" v-model="user.user" name="user" required type="text" placeholder="Nombre de usuarios">
 	                </div>
 	                
 	                <div class="form-group">
 	                  <label class="control-label">Permisos</label>
-	                  <select class="form-control"  name="perm_user" v-model="user.permisos">
+	                  <select class="form-control"   v-model="user.permisos" name="permisos">
 	                	<option value="root">Root</option>
 	                	<option value="admin">Administrador</option>
 	                  </select>
@@ -31,12 +31,12 @@
 	               
 	                 <div class="form-group">
 	                  <label class="control-label">Contraseña</label>
-	                  <input class="form-control" v-model="user.pass1" required type="password" placeholder="Contraseña">
+	                  <input class="form-control" v-model="user.pass1" name="pass1" required type="password" placeholder="Contraseña">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Repita la contraseña </label>
 	              
-	                   <input class="form-control" v-model="user.pass2"  type="password" placeholder="Repita contraseña">
+	                   <input class="form-control" v-model="user.pass2" name="pass2"  type="password" placeholder="Repita contraseña">
 	                </div>
 	          
 	               
@@ -44,7 +44,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -74,6 +74,7 @@ import axios from 'axios';
 					Submited:1
 					
 				},
+				errores:{}
 			}
 		},
 		created()
@@ -116,7 +117,7 @@ import axios from 'axios';
 				if(!this.ValidForm())
 				return;
 			 this.$store.commit('loading',true);
-				axios.post('/polleras/api/user/registro',this.user)
+				axios.post('/user/registro',this.user)
                 .then(request => 
                 {
                 	 this.$store.commit('loading',false);
@@ -134,7 +135,7 @@ import axios from 'axios';
                              
                     }else
                     {
-                        AxiosCatch(request.data.error);
+                       this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

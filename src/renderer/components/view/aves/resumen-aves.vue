@@ -12,8 +12,8 @@
     <div class="btn-group">
 
       <router-link class="btn btn-success btn-sm" :to="{name:'agregar-aves',params:{idgalpon:id_galpon}}" title="Agregar aves"><i class="fa fa-plus-square"></i></router-link>
-      <router-link class="btn btn-info btn-sm" :to="{name:'venta-aves',params:{idgalpon:id_galpon}}" title="Venta de aves"><i class="fa fa-dollar"></i></router-link>
-       <router-link class="btn btn-danger btn-sm" :to="{name:'mortalidad-aves',params:{idgalpon:id_galpon}}" title="Muerte de aves"><i class="fa fa-remove"></i></router-link>
+      <router-link class="btn btn-info btn-sm" v-if="galpon.aves>0"  :to="{name:'venta-aves',params:{idgalpon:id_galpon}}" title="Venta de aves"><i class="fa fa-dollar"></i></router-link>
+       <router-link class="btn btn-danger btn-sm" v-if="galpon.aves>0"  :to="{name:'mortalidad-aves',params:{idgalpon:id_galpon}}" title="Muerte de aves"><i class="fa fa-remove"></i></router-link>
     </div> 
   </div>
   </div>
@@ -35,7 +35,7 @@
                 <a href="#" :class="['nav-link',active.muertes]" @click.prevent="list('muertes')"><i class="fa fa-remove"></i> Muertes</a>    
               </li>
                <li class="nav-item" >
-               <a href="#" :class="['nav-link',active.reporte]" @click.prevent="list('reporte')"><i class="fa fa-file-pdf-o"></i> Reporte</a>     
+               <a href="#" :class="['nav-link',active.reporte]" @click.prevent="pdf=!pdf "><i class="fa fa-file-pdf-o"></i> Reporte</a>     
               </li>
             </ul>
           </div>
@@ -58,7 +58,7 @@
                 <h4 class="tile-header">Muerte de Aves</h4>
         <list-mortalidad-aves :muertes="muertes" :id_galpon="id_galpon" @change="load"></list-mortalidad-aves>
               </div>
-            <show-pdf v-if="resumen('reporte')" :src="'/polleras/api/aves/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" ></show-pdf>
+            <iframe id="iframe" v-if="pdf" :src="basepath+'/aves/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" class="iframe-hide"></iframe>
           </div>
         </div>
       </div>
@@ -91,6 +91,7 @@
         },
         data () {
             return {
+              pdf:false,
               
               active:
                 {
@@ -110,25 +111,20 @@
                 galpon:{}
             }
         },
-        updated()
-        {
-          $(document).ready(e=>{
-            $('#compras').DataTable();
-            $('#ventas').DataTable();
-            $('#muertes').DataTable();
-            
-          });
-            
-        },
+      
         created()
         {
 
             this.load();
         },
-        computed:
-        {
+       computed:
+       {
           
-        },
+            basepath()
+            {
+              return this.$store.getters.localSettings.basePath;
+            }
+       },
         methods:
         {
           change_meta(meta)
@@ -141,14 +137,14 @@
            
            if(this.id_galpon)
             {
-              axios.get('/polleras/api/galpones/?id_galpon='+this.id_galpon).then(req=>
+              axios.get('/galpones/?id_galpon='+this.id_galpon).then(req=>
               {
                   this.galpon=req.data.galpones[0];
               }).catch(AxiosCatch);
             }
            this.query=query;
              this.$store.commit('loading',true);
-            axios.get('/polleras/api/aves/resumen?'+query+(this.id_galpon?'&id_galpon='+this.id_galpon:''))
+            axios.get('/aves/resumen?'+query+(this.id_galpon?'&id_galpon='+this.id_galpon:''))
             .then(request=>
             {
                this.$store.commit('loading',false);
@@ -191,6 +187,10 @@
 </script>
 
 <style>
+.iframe-hide
+{
+  display: none;
+}
     .portfolio-btn
     {
       margin: -1.25rem -1.25rem;

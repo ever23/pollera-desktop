@@ -1,7 +1,7 @@
 <template>
 
 <div>
-            <table class="table table-hover table-bordered" id="muertes">
+            <table class="table  table-hover table-bordered" ref="tabla">
              <thead >
                  <tr >
                     <td>
@@ -23,7 +23,7 @@
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="item in muertes" > 
+                <tr v-for="item in muertes" ref="items"> 
                     <td>
                             {{ item.rason}}
                     </td>
@@ -47,8 +47,10 @@
 
 <script>
      import Del from  '../../../assets/js/delete.js'
+   import DataTable from '../../../assets/js/list-DataTable.js'
     export default 
     {
+        mixins: [DataTable],
         name:'list-mortalidad-aves',
         props:['muertes','id_galpon'],
         data () {
@@ -56,15 +58,7 @@
                
             }
         },
-        created()
-        {
-          
-            
-        },
-        updated()
-        {
-           
-        },
+       
         computed:
         {
           isRoot()
@@ -72,8 +66,10 @@
                 return this.$store.getters.User.permisos=='root';
             }
         },
+      
         methods:
         {
+         
             eliminar(item)
             {
                  Del('mortalidad','id_mortalidad',item.id_mortalidad).then(d=>this.$emit('change'));

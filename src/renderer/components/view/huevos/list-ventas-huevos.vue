@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table table-hover table-bordered" id="compras_alimentos">
+    <table class="table  table-hover table-bordered" ref="tabla">
              <thead >
                  <tr >
                     
@@ -28,7 +28,7 @@
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="item in ventas" > 
+                <tr v-for="item in ventas" ref="items"> 
                    <td>
                             {{ item.detalles }}
                     </td>
@@ -59,8 +59,10 @@
 <script>
     import Del from  '../../../assets/js/delete.js'
     import filter from '../../../assets/js/UserVueFilter.js'
+    import DataTable from '../../../assets/js/list-DataTable.js'
     export default 
     {
+        mixins: [DataTable],
         filters:filter,
         name:'list-consumos-alimentos',
         props:['ventas'],
@@ -70,14 +72,6 @@
                 
                
             }
-        },
-        updated()
-        { 
-           
-        },
-        created()
-        {
-           
         },
         computed:
         {
@@ -89,10 +83,11 @@
         },
         methods:
         {
-             eliminar(item)
-            {
-                 Del('venta_huevos','id_ventas',item.id_ventas).then(d=>this.$emit('change'));
-            } 
+         
+          eliminar(item)
+          {
+            Del('venta_huevos','id_ventas',item.id_ventas).then(d=>this.$emit('change'));
+          } 
         },   
     }
 </script>

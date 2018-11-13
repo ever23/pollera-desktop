@@ -8,8 +8,8 @@
 	          <div class="tile">
 	            <h3 class="tile-title">Registrar pago de nomina</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
-	              <table class="table table-reponsive table-hover ">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
+	              <table class="table  table-reponsive table-hover ">
 	              	<thead>
 	              		<tr>
 	              			<th>CI</th>
@@ -40,7 +40,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -63,7 +63,8 @@ import axios from 'axios';
 					empleados:{},
 					Submited:1
 				},
-				empleados:[]
+				empleados:[],
+				errores:{}
 				
 			
 
@@ -72,7 +73,7 @@ import axios from 'axios';
 		created()
 		{
 			 this.$store.commit('loading',true);
-			axios.get('/polleras/api/empleados/nomina').
+			axios.get('/empleados/nomina').
 			then(req=>
 				{
 					 this.$store.commit('loading',false);
@@ -119,7 +120,7 @@ import axios from 'axios';
                   if (isConfirm) 
                   { 
                   	 this.$store.commit('loading',true);
-					axios.post('/polleras/api/empleados/pago_nomina',this.nomina)
+					axios.post('/empleados/pago_nomina',this.nomina)
 	                .then(request => 
 	                {
 	                	 this.$store.commit('loading',false);
@@ -137,7 +138,7 @@ import axios from 'axios';
 	                             
 	                    }else
 	                    {
-	                        AxiosCatch(request.data.error);
+	                        this.errores=request.data.error;
 	                    }  
 	                }).catch(AxiosCatch);
                   } 

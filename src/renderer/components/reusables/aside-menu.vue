@@ -1,10 +1,10 @@
 <template>
-     <aside class="app-sidebar">
+     <aside class="app-sidebar" @click="$emit('click')">
       <div class="app-sidebar__user">
         
         <div>
-         <img class="app-sidebar__user-avatar img-fluid " src="/polleras/api/settings/imagen" style="max-width: 90%;" alt="Logo granga">
-          <p class="app-sidebar__user-name">{{ User.nombres }}</p><b><i> ({{ User.permisos }})</i></b>
+         <img class="app-sidebar__user-avatar img-fluid " :src="basepath+'/settings/imagen'" style="max-width: 90%;" alt="Logo granga">
+          <p class="app-sidebar__user-name"></p><b><i> </i></b>
         </div>
       </div>
       <treeview-menu :menu="menu">
@@ -12,8 +12,8 @@
     </aside>
 </template>
 <script>
-    import vuex from 'vuex';
     import MenuRoot from '../../assets/menu.js'
+    import axios from 'axios'
    // import MenuAdmin from '../../assets/menu-admin.js'
     export default {
         name:'aside-menu',
@@ -43,6 +43,10 @@
             User()
             {
                 return this.$store.getters.User;
+            },
+            basepath()
+            {
+              return this.$store.getters.localSettings.basePath;
             }
         }
     }

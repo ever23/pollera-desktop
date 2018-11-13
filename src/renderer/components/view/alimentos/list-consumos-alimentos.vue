@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table  class="table table-hover table-bordered" id="consumos_alimentos">
+    <table  class="table  table-hover table-bordered" ref="tabla"  id="consumos_alimentos">
              <thead >
                  <tr >
                      
@@ -20,7 +20,7 @@
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="item in consumos" > 
+               <tr v-for="item in consumos" ref="items"> 
                     <td>
                             {{ item.nombre }}
                     </td>
@@ -46,8 +46,10 @@
     import axios from 'axios'
     import Del from  '../../../assets/js/delete.js'
     import filter from '../../../assets/js/UserVueFilter.js'
+    import DataTable from '../../../assets/js/list-DataTable.js'
     export default 
     {
+        mixins: [DataTable],
        filters:filter,
         name:'list-consumos-alimentos',
         props:['consumos'],
@@ -57,15 +59,7 @@
                 
                
             }
-        },
-        updated()
-        { 
-           
-        },
-        created()
-        {
-           
-        },
+        }, 
         computed:
         {
            isRoot()
@@ -73,8 +67,10 @@
                 return this.$store.getters.User.permisos=='root';
             }
         },
+       
         methods:
         {
+          
            eliminar(item)
             {
               Del('consumo_alimentos','id_consumo',item.id_consumo).then(d=>this.$emit('change'));

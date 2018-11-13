@@ -1,27 +1,27 @@
 <template>
 	<main class="app-content">
-		<app-title :title="[{title:'Medicinas',to:'medicinas'},{title:type+' medicina'}]" :icon="type=='Insertar'?'plus':'edit'"></app-title>
+		<app-title :title="[{title:'Medicinas',to:'resumen-medicinas'},{title:type+' medicina'}]" :icon="type=='Insertar'?'plus':'edit'"></app-title>
 		<div class="row">
 		
 			<div class=" offset-md-2 offset-sm-1 col-md-8 col-sm-10">
 	          <div class="tile">
 	            <h3 class="tile-title">{{ type }} medicina</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	                <div class="form-group">
 	                  <label class="control-label">Descripcion </label>
-	                  <input class="form-control" v-model="medicina.descripcion" required type="text" placeholder="Descripcion">
+	                  <input class="form-control" v-model="medicina.descripcion" name="descripcion" required type="text" placeholder="Descripcion">
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Tipo </label>
-	                  <input class="form-control" v-model="medicina.tipo" required type="text" placeholder="Tipo">
+	                  <input class="form-control" v-model="medicina.tipo" name="tipo" required type="text" placeholder="Tipo">
 	                </div>
 	                
 	                <div class="form-group">
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -46,7 +46,8 @@ import axios from 'axios';
 					tipo:null,
 					Submited:true
 				},
-				type:'Insertar'
+				type:'Insertar',
+				errores:{}
 				
 			}
 		},
@@ -81,7 +82,7 @@ import axios from 'axios';
 			Enviar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/medicinas/'+this.type.toLowerCase(),this.medicina)
+				axios.post('/medicinas/'+this.type.toLowerCase(),this.medicina)
                 .then(request => 
                 {
                 	 this.$store.commit('loading',false);
@@ -103,18 +104,11 @@ import axios from 'axios';
                             type: "success",
 
                         },
-                        ()=>this.$router.push({name:'resumen-medicinas'}));
+                         ()=>this.$router.push({name:'resumen-medicinas'}));
                              
                     }else
                     {
-                        $.notify(
-                        {
-                          title: "Error: ",
-                          message: request.data.error,
-                          icon: 'fa fa-warning' 
-                          },{
-                            type: "danger"
-                        });
+                        this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

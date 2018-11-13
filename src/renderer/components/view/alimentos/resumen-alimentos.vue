@@ -9,7 +9,7 @@
     <div><h3>Galpon {{ galpon.nombre  }}</h3></div>
     <div class="btn-group">
 
-      <router-link class="btn btn-success btn-sm" :to="{name:'consumo-alimentos',params:{idgalpon:id_galpon}}" title="Agregar Consumo"><i class="fa fa-shopping-basket"></i></router-link>
+      <router-link class="btn btn-success btn-sm" v-if="galpon.aves>0" :to="{name:'consumo-alimentos',params:{idgalpon:id_galpon}}" title="Agregar Consumo"><i class="fa fa-shopping-basket"></i></router-link>
       
     </div> 
   </div>
@@ -29,7 +29,7 @@
                <a href="#" :class="['nav-link',active.consumos]" @click.prevent="list('consumos')"> <i class="fa fa-shopping-basket"></i> Consumos</a>     
               </li> 
               <li class="nav-item" >
-               <a href="#" :class="['nav-link',active.reporte]" @click.prevent="list('reporte')"><i class="fa fa-file-pdf-o"></i> Reporte </a>     
+               <a href="#" :class="['nav-link']" @click.prevent="pdf=!pdf"><i class="fa fa-file-pdf-o"></i> Reporte </a>     
               </li> 
             </ul>
           </div>
@@ -48,16 +48,17 @@
                 <h4 class="tile-header">Consumos de Alimentos</h4>
            <list-consumos-alimentos :consumos="consumos" @change="load"/>
               </div>
-             <show-pdf v-if="resumen('reporte')" :src="'/polleras/api/alimentos/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" />  
+             <!--<show-pdf :src="'/alimentos/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" />  -->
+             <iframe id="iframe" v-if="pdf" :src="basepath+'/alimentos/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" @loaded="pdf=false" class="iframe-hide"></iframe>
           </div>
         </div>
-      </div>
+      </div> 
   </main>
 </template>
 
 <script>
    import axios from 'axios'
- 
+  
    import listCompras from './list-compras-alimentos.vue'
    import listConsumos from './list-consumos-alimentos.vue'
   import estadisticas from './estadisticas-alimentos.vue'
@@ -72,7 +73,7 @@
         props:['id_galpon'],
         data () {
             return {
-              
+              pdf:false,
               active:
                 {
                   estadisticas:'active',compras:null,consumos:null,reporte:null
@@ -90,20 +91,17 @@
                 
             }
         },
-        updated()
-        {
-          $(document).ready(e=>
-            {
-               $('#compras_alimentos').DataTable();
-               $('#consumos_alimentos').DataTable();
-          
-            });
-         
-          
-          
-        },
+       
          watch:
         {
+          pdf()
+          {
+            console.log(this.pdf)
+            setTimeout(()=>
+            {
+              //this.pdf=false;
+            },1000);
+          },
           id_galpon()
           {
             this.load();
@@ -120,7 +118,11 @@
         },
         computed:
         {
-          
+            
+            basepath()
+            {
+              return this.$store.getters.localSettings.basePath;
+            }
         },
         methods:
         {
@@ -133,7 +135,7 @@
           {
             if(this.id_galpon)
             {
-              axios.get('/polleras/api/galpones/?id_galpon='+this.id_galpon).then(req=>
+              axios.get('/galpones/?id_galpon='+this.id_galpon).then(req=>
               {
                   this.galpon=req.data.galpones[0];
               }).catch(AxiosCatch);
@@ -141,7 +143,7 @@
            
             this.query=query;
              this.$store.commit('loading',true);
-            axios.get('/polleras/api/alimentos/resumen?'+query+(this.id_galpon?'&id_galpon='+this.id_galpon:''))
+            axios.get('/alimentos/resumen?'+query+(this.id_galpon?'&id_galpon='+this.id_galpon:''))
             .then(request=>
             {
                 if(!request.data.error)
@@ -153,7 +155,8 @@
                     media_consumo:request.data.media_consumo,
                     alimentos:request.data.alimentos,
                     consumos: this.consumos,
-                    compras:this.compras
+                    compras:this.compras,
+                      consumo_mes:request.data.consumo_mes
                    };
                   // this.pdf=request.data.pdf;
                    
@@ -182,3 +185,9 @@
         },   
     }
 </script>
+<style scope>
+.iframe-hide
+{
+  display: none;
+}
+</style>

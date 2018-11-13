@@ -7,22 +7,22 @@
 	          <div class="tile">
 	            <h3 class="tile-title">Registrar consumo de {{ medicina.descripcion }} {{ medicina.tipo}}</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	               <div class="form-group">
-	               	<select-galpon @change="galpon"></select-galpon>
+	               	<select-galpon @change="galpon" :filter="g=>g.aves>0"/>
 	               </div>
 	                <div class="form-group">
 	                  <label class="control-label">Fecha </label>
-	                  <input class="form-control" v-model="compra.fecha" required type="date" placeholder="fecha">
+	                  <input class="form-control" v-model="compra.fecha" name="fecha" required type="date" placeholder="fecha">
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Cantidad </label>
-	                  <input class="form-control" v-model="compra.cantidad" required type="text" placeholder="cantidad">
+	                  <input class="form-control" v-model="compra.cantidad" name="cantidad" required type="text" placeholder="cantidad">
 	                </div>
 	             
 	                <div class="form-group">
 	                	<label class="control-label">Detalles </label>
-	                	<textarea placeholder="Detalles" class="form-control" v-model="compra.detalles" required></textarea>
+	                	<textarea placeholder="Detalles" class="form-control" v-model="compra.detalles" name="detalles" required></textarea>
 	                </div>
 	               
 	                
@@ -30,7 +30,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -68,7 +68,8 @@ import select_galpon from '../galpones/select-galpon.vue'
 					detalles:null,
 					
 					Submited:true
-				}
+				},
+				errores:{}
 				
 			}
 		},
@@ -77,7 +78,7 @@ import select_galpon from '../galpones/select-galpon.vue'
 			
 			this.compra.id_medicina=this.id_medicina;
 			 this.$store.commit('loading',true);
-            axios.get('/polleras/api/medicinas/?id_medicina='+this.id_medicina)
+            axios.get('/medicinas/?id_medicina='+this.id_medicina)
             .then(request=>
             {
             	 this.$store.commit('loading',false);
@@ -107,7 +108,7 @@ import select_galpon from '../galpones/select-galpon.vue'
 			Enviar()
 			{
 				
-				axios.post('/polleras/api/medicinas/consumo',this.compra)
+				axios.post('/medicinas/consumo',this.compra)
                 .then(request => 
                 {
                     if(request.data.insert)
@@ -120,11 +121,12 @@ import select_galpon from '../galpones/select-galpon.vue'
                             type: "success",
 
                         },
-                        ()=>this.$router.push({name:'resumen-medicinas'}));
+                        ()=>this.$router.push({name:'resumen-medicinas-galpon',params:{id_galpon:this.compra.id_galpon}}));
+                        //()=>this.$router.push({name:'resumen-medicinas'}));
                              
                     }else
                     {
-                       AxiosCatch(request.data.error);
+                       this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

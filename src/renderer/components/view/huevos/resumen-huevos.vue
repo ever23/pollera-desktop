@@ -8,7 +8,7 @@
     <div><h3>Galpon {{ galpon.nombre  }}</h3></div>
     <div class="btn-group">
 
-      <router-link class="btn btn-success btn-sm" :to="{name:'agregar-huevos',params:{idgalpon:id_galpon}}" title="Produccion de huevos"><i class="fa fa-building"></i></router-link>
+      <router-link class="btn btn-success btn-sm" v-if="galpon.aves>0"  :to="{name:'agregar-huevos',params:{idgalpon:id_galpon}}" title="Produccion de huevos"><i class="fa fa-building"></i></router-link>
       
     </div> 
   </div>
@@ -29,7 +29,7 @@
                <a href="#" :class="['nav-link',active.ventas]" @click.prevent="list('ventas')"><i class="fa fa-dollar"></i> Ventas</a>     
               </li>
                 <li class="nav-item" >
-               <a href="#" :class="['nav-link',active.reporte]" @click.prevent="list('reporte')"><i class="fa fa-file-pdf-o"></i> Reporte</a>     
+               <a href="#" :class="['nav-link',active.reporte]" @click.prevent="pdf=!pdf "><i class="fa fa-file-pdf-o"></i> Reporte</a>     
               </li>
             </ul>
           </div>
@@ -48,7 +48,7 @@
                 <h4 class="tile-header">Ventas de Huevos</h4>
            <list-ventas-huevos :ventas="ventas" @change="load"></list-ventas-huevos>
               </div>
-              <show-pdf v-if="resumen('reporte')" :src="'/polleras/api/huevos/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" ></show-pdf>
+              <iframe id="iframe" v-if="pdf" :src="basepath+'/huevos/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" class="iframe-hide"></iframe>
             
           </div>
         </div>
@@ -72,7 +72,7 @@
         props:['id_galpon'],
         data () {
             return {
-              
+               pdf:false,
               active:
                 {
                   estadisticas:'active',produccion:null,ventas:null,reporte:null
@@ -89,17 +89,7 @@
                 galpon:{}
             }
         },
-        updated()
-        {
-          $(document).ready(e=>
-            {
-               $('#compras_alimentos').DataTable();
-             $('#consumos_alimentos').DataTable();
-             
-            });
-          
-          
-        },
+       
          watch:
         {
           id_galpon()
@@ -114,7 +104,11 @@
         },
         computed:
         {
-          
+            
+            basepath()
+            {
+              return this.$store.getters.localSettings.basePath;
+            }
         },
         methods:
         {
@@ -127,14 +121,14 @@
           {
             if(this.id_galpon)
             {
-              axios.get('/polleras/api/galpones/?id_galpon='+this.id_galpon).then(req=>
+              axios.get('/galpones/?id_galpon='+this.id_galpon).then(req=>
               {
                   this.galpon=req.data.galpones[0];
               }).catch(AxiosCatch);
             }
             this.query=query;
              this.$store.commit('loading',true);
-            axios.get('/polleras/api/huevos/resumen?'+query+(this.id_galpon?'&id_galpon='+this.id_galpon:''))
+            axios.get('/huevos/resumen?'+query+(this.id_galpon?'&id_galpon='+this.id_galpon:''))
             .then(request=>
             {
                this.$store.commit('loading',false);
@@ -144,6 +138,7 @@
                     this.produccion=request.data.produccion;
                     
                     this.estadisticas={
+                      ventas:request.data.ventas,
                       produccion:request.data.produccion,
                       huevos_grandes:request.data.huevos_grandes,
                       huevos_pequenos:request.data.huevos_pequenos,
@@ -181,6 +176,10 @@
 </script>
 
 <style>
+.iframe-hide
+{
+  display: none;
+}
     .portfolio-btn
     {
       margin: -1.25rem -1.25rem;

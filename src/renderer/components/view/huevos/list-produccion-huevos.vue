@@ -1,6 +1,6 @@
 <template>
   <div>
-     <table class="table table-hover table-bordered" id="consumos_alimentos">
+     <table class="table  table-hover table-bordered" ref="tabla">
              <thead >
                  <tr>
                   <td>
@@ -25,7 +25,7 @@
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="item in produccion" > 
+                <tr v-for="item in produccion" ref="items"> 
                     <td>
                             {{ item.detalles }}
                     </td>
@@ -55,22 +55,16 @@
 
 <script>
    import Del from  '../../../assets/js/delete.js'
+   import DataTable from '../../../assets/js/list-DataTable.js'
     export default 
     {
+        mixins: [DataTable],
         name:'list-produccion-huevos',
         props:['produccion'],
-
         data () {
             return {
                
             }
-        },
-        updated()
-        { 
-           
-        },
-        created()
-        {
         },
         computed:
         {

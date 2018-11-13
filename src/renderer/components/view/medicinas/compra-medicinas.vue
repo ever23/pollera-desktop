@@ -7,25 +7,25 @@
 	          <div class="tile">
 	            <h3 class="tile-title">Registrar compra de {{ medicina.descripcion }} {{ medicina.tipo}}</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"  @submit.prevent="Enviar">
 	                <div class="form-group">
 	                  <label class="control-label">Fecha </label>
-	                  <input class="form-control" v-model="compra.fecha" required type="date" placeholder="fecha">
+	                  <input class="form-control" v-model="compra.fecha" name="fecha" required type="date" placeholder="fecha">
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Cantidad </label>
-	                  <input class="form-control" v-model="compra.cantidad" required type="text" placeholder="Cantidad">
+	                  <input class="form-control" v-model="compra.cantidad" name="cantidad" required type="text" placeholder="Cantidad">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Costo por unidad</label>
-	                  <input class="form-control" v-model="compra.costo" required type="text" :placeholder="'Costo '+settings.moneda">
+	                  <input class="form-control" v-model="compra.costo" name="costo" required type="text" :placeholder="'Costo '+settings.moneda">
 	                </div>
 	                
 	                <div class="form-group">
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -54,7 +54,7 @@ import {fecha} from '../../../assets/js/Date.js'
 					cantidad:null,
 					costo:null,
 					Submited:true
-				}
+				},errores:{}
 				
 			}
 		},
@@ -70,7 +70,7 @@ import {fecha} from '../../../assets/js/Date.js'
 			
 			this.compra.id_medicina=this.id_medicina;
 			 this.$store.commit('loading',true);
-            axios.get('/polleras/api/medicinas/?id_medicina='+this.id_medicina)
+            axios.get('/medicinas/?id_medicina='+this.id_medicina)
             .then(request=>
             {
             	 this.$store.commit('loading',false);
@@ -96,7 +96,7 @@ import {fecha} from '../../../assets/js/Date.js'
 			Enviar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/medicinas/compra',this.compra)
+				axios.post('/medicinas/compra',this.compra)
                 .then(request => 
                 {
                 	 this.$store.commit('loading',false);
@@ -114,7 +114,7 @@ import {fecha} from '../../../assets/js/Date.js'
                              
                     }else
                     {
-                       AxiosCatch(request.data.error);
+                       this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

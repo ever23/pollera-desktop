@@ -1,7 +1,7 @@
 <template>
 
  <div  >
-            <table class="table table-hover table-bordered" id="list_compras_medicinas">
+            <table class="table  table-hover table-bordered" ref="tabla">
              <thead >
                  <tr >
                     <td>
@@ -30,7 +30,7 @@
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="item in compras" > 
+                <tr v-for="item in compras" ref="items"> 
                     <td>
                             {{ item.descripcion}}
                     </td>
@@ -62,8 +62,10 @@
 <script>
     import filter from '../../../assets/js/UserVueFilter.js'
     import Del from  '../../../assets/js/delete.js'
+   import DataTable from '../../../assets/js/list-DataTable.js'
     export default 
     {
+        mixins: [DataTable],
         name:'list-compras-medicinas',
         props:['compras','id_granjas'],
         filters:filter,
@@ -72,15 +74,7 @@
                
             }
         },
-        updated()
-        {
-          $(document).ready(e=>
-          {
-            $('#list_compras_medicinas').DataTable();
-            
-          });
-            
-        },
+       
         computed:
         {
             isRoot()

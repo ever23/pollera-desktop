@@ -39,7 +39,7 @@
             listado()
             {
                this.$store.commit('loading',true);
-                axios.get('/polleras/api/medicinas/listado')
+                axios.get('/medicinas/listado')
               .then(request=>
               {
                  this.$store.commit('loading',false);

@@ -7,7 +7,7 @@ import notificaciones from './notificaciones.vue'
 import HeaderMenu from './header-menu'
 import AsideMenu from './aside-menu'
 import consultaResumen from './consulta-resumen.vue'
-import showpdf from './show-pdf.vue'
+//import showpdf from './show-pdf.vue'
 import formulario from './formulario.vue'
 Vue.component('app-title',AppTitle);
 Vue.component('input-image',InputImage);
@@ -17,5 +17,5 @@ Vue.component('dropdown-notificaciones',notificaciones);
 Vue.component('aside-menu',AsideMenu);
 Vue.component('header-menu',HeaderMenu);
 Vue.component('consulta-resumen',consultaResumen);
-Vue.component('show-pdf',showpdf);
+//Vue.component('show-pdf',showpdf);
 Vue.component('formulario',formulario);

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-     <table class="table table-hover table-bordered" id="compras_alimentos">
+     <table class="table  table-hover table-bordered" ref="tabla">
              <thead >
                  <tr >
                  <td>
@@ -29,7 +29,7 @@
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="item in nomina" > 
+                <tr v-for="item in nomina" ref="items"> 
                   <td >
                            
                             <div class="animated-radio-button" v-if="item.asistencia=='si'">
@@ -73,8 +73,10 @@
 <script>
     import axios from 'axios'
     import filter from '../../../assets/js/UserVueFilter.js'
+   import DataTable from '../../../assets/js/list-DataTable.js'
     export default 
     {
+        mixins: [DataTable],
         filters:filter,
         name:'list-nomina',
         props:['nomina'],
@@ -84,13 +86,7 @@
                
             }
         },
-        updated()
-        { 
-           
-        },
-        created()
-        {
-        },
+       
         computed:
         {
            isRoot()
@@ -98,8 +94,10 @@
                 return this.$store.getters.User.permisos=='root';
             }
         },
+      
         methods:
         {
+         
           asistir(item,e)
           {
             
@@ -119,7 +117,7 @@
                   {
                    
 
-                    axios.post('/polleras/api/empleados/asistir',{ci_empleado:item.ci_empleado}).
+                    axios.post('/empleados/asistir',{ci_empleado:item.ci_empleado}).
                     then(req=>
                     {
                       if(req.data.asistio)
@@ -157,7 +155,7 @@
                   { 
                    
                    // delete(this.proyectos[index]);
-                    axios.get('/polleras/api/empleados/eliminar?ci_empleado='+item.ci_empleado)
+                    axios.get('/empleados/eliminar?ci_empleado='+item.ci_empleado)
                     .then(request=>
                     {
                       if(request.data.eliminado)

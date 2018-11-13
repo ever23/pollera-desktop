@@ -7,23 +7,23 @@
 	            <h3 class="tile-title">Compra de alimentos 
 	            balanceados</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	                <div class="form-group">
 	                  <label class="control-label">Cantidad </label>
-	                  <input :class="['form-control',error.cantidad?'is-invalid':'']"   @focus="error.cantidad=false" v-model="alimentos.cantidad" required type="text" :placeholder="'Cantidad '+settings.umalimentos">
-	                  <div class="form-control-feedback" v-if="error.cantidad">{{ error.cantidad }}</div>
+	                  <input :class="'form-control'"   v-model="alimentos.cantidad" name="cantidad" required type="text" :placeholder="'Cantidad '+settings.umalimentos">
+	                 
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Costo por unidad</label>
-	                  <input class="form-control" v-model="alimentos.costo" required type="text" :placeholder="'Costo '+settings.moneda">
+	                  <input class="form-control" v-model="alimentos.costo" name="costo" required type="text" :placeholder="'Costo '+settings.moneda">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Fecha</label>
-	                  <input class="form-control" ref="fecha" v-model="alimentos.fecha" required type="date" placeholder="fecha">
+	                  <input class="form-control" ref="fecha" v-model="alimentos.fecha" name="fecha" required type="date" placeholder="fecha">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Detalles</label>
-	                  <textarea class="form-control" v-model="alimentos.detalles" required  placeholder="Detalles"/>
+	                  <textarea class="form-control" v-model="alimentos.detalles" name="detalles" required  placeholder="Detalles"/>
 	                </div>
 	                
 	               
@@ -31,7 +31,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -60,7 +60,7 @@ import axios from 'axios';
 					
 					Submited:1
 				},
-				error:{},
+				errores:{},
 			
 
 			}
@@ -94,7 +94,7 @@ import axios from 'axios';
 			Enviar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/alimentos/insertar',this.alimentos)
+				axios.post('/alimentos/insertar',this.alimentos)
                 .then(request => 
                 {
                 	 this.$store.commit('loading',false);
@@ -113,7 +113,7 @@ import axios from 'axios';
                     }else
                     {
                     	//this.error=request.data.error;
-                        AxiosCatch(request.data.error);
+                       this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

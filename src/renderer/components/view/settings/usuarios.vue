@@ -7,8 +7,8 @@
                 <router-link class="btn btn-primary btn-sm" :to="{name:'registro-usuario'}"><i class="fa fa-plus"></i>Agregar usuario</router-link>
             </div> 
         </div>
-         <div class="table-responsive mailbox-messages"  >
-            <table class="table table-hover table-bordered" id="sampleTable">
+         <div class="table -responsive mailbox-messages"  >
+            <table class="table  table-hover table-bordered" ref="tabla">
              <thead >
                  <tr class="info">
                     <td>
@@ -28,7 +28,7 @@
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="user in usuarios" > 
+                <tr v-for="user in usuarios" ref="items"> 
                    
                   
                     <td>
@@ -58,8 +58,10 @@
 </template>
 <script>
 import axios from 'axios'
-	export default
-	{
+	import DataTable from '../../../assets/js/list-DataTable.js'
+    export default 
+    {
+        mixins: [DataTable],
 		name:'usuarios',
 		data()
 		{
@@ -72,20 +74,13 @@ import axios from 'axios'
            
 	       this.refresh();	
 		},
-        updated()
-        {
-          $(document).ready(e=>
-          {
-             $('#sampleTable').DataTable();
-          })
-          
-        },
+        
         methods:
         {
             refresh()
             {
                 this.$store.commit('loading',true);
-               axios.get('/polleras/api/user/lista')
+               axios.get('/user/lista')
                 .then(request=>
                 {
                    this.$store.commit('loading',false);
@@ -114,7 +109,7 @@ import axios from 'axios'
                   {
                    // delete(this.proyectos[index]);
                     this.$store.commit('loading',true);
-                    axios.delete('/polleras/api/user/eliminar?id_usuarios='+user.id_usuarios)
+                    axios.delete('/user/eliminar?id_usuarios='+user.id_usuarios)
                     .then(request=>
                     {
                        this.$store.commit('loading',false);

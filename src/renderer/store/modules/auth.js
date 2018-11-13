@@ -12,7 +12,8 @@ export default
         nombres:'',
         apellidos:'',
         permisos:'',
-        id_granjas:''
+       
+        recordar:false
         
     },
     getters:
@@ -25,7 +26,7 @@ export default
                 nombres:state.nombres,
                 apellidos:state.apellidos,
                 permisos:state.permisos,
-                id_granjas:state.id_granjas
+                recordar:state.recordar
             }
         },
         SessionId(state)
@@ -39,7 +40,7 @@ export default
     },
     mutations:
     {
-        Login(state,Session)
+        Login(state,Session,recordar)
         {
             state.token=Session.token;
             state.id_user=Session.id_user;
@@ -47,7 +48,7 @@ export default
             state.nombres=Session.nombres;
             state.apellidos=Session.apellidos;
             state.permisos=Session.permisos;
-            state.id_granjas=Session.id_granjas;
+            state.recordar=recordar;
         },
         Logout(state)
         {
@@ -57,7 +58,7 @@ export default
             state.nombres=null;
             state.apellidos=null;
             state.permisos=null;
-            state.id_granjas=null;
+            state.recordar=false;
         }
     },
     actions:
@@ -66,13 +67,13 @@ export default
         LogIn(context,data)
         { 
              context.commit('loading',true);
-             return axios.post('/polleras/api/user/',data)
+             return axios.post('/user/',data)
                         .then(request => 
                         {
                              context.commit('loading',false);
                             if(request.data.login)
                             {
-                                context.commit("Login", request.data.data); 
+                                context.commit("Login", request.data.data,data.recordar); 
                                 login(request.data.data.token);
                                 //$router.push('admin');
                             }else
@@ -85,11 +86,11 @@ export default
         },
         LogOut(context)
         {
-             context.commit('loading',true);
-             return axios.get('/polleras/api/user/logout')
+            // context.commit('loading',true);
+             return axios.get('/user/logout')
                         .then(request => 
                         {
-                             context.commit('loading',false);
+                            // context.commit('loading',false);
                             context.commit("Logout");
                             return request.data;
                            // console.log( request.data,typeof request.data);
@@ -97,11 +98,11 @@ export default
         },
         user(context)
         {
-             context.commit('loading',true);
-            return axios.get('/polleras/api/user/islogin')
+            // context.commit('loading',true);
+            return axios.get('/user/islogin')
                         .then(request => 
                         {
-                             context.commit('loading',false);
+                            // context.commit('loading',false);
                             if(request.data.login)
                             {
                                // console.log(request.data.data)

@@ -11,14 +11,18 @@
 	          <div class="tile">
 	            <h3 class="tile-title">{{ type }} galpon</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario   @submit.prevent="Enviar" :error="errores">
 	                 <div class="form-group">
 	                  <label class="control-label">Descripcion</label>
-	                  <input class="form-control" v-model="galpon.nombre" required type="text" placeholder="Descripcion"  >
+	                  <input class="form-control" v-model="galpon.nombre" name="nombre" required type="text" placeholder="Descripcion" >
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Capacidad</label>
-	                  <input class="form-control" v-model="galpon.capacidad" required type="text" placeholder="capacidad"  >
+	                  <input class="form-control" v-model="galpon.capacidad" name="capacidad" required type="text" placeholder="capacidad"   >
+	                </div>
+	                  <div class="form-group">
+	                  <label class="control-label">Consumo diario de alimetos por ave</label>
+	                  <input class="form-control" v-model="galpon.consumo" name="consumo" required type="text" placeholder="consumo">
 	                </div>
 	                 
 	               
@@ -26,7 +30,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -49,10 +53,12 @@ import axios from 'axios';
 				{
 					capacidad:null,
 					nombre:null,
+					consumo:null,
 					//id_granjas:null,
 					Submited:1
 				},
 				type:'Agregar',
+				errores:{}
 				
 				
 			
@@ -65,7 +71,7 @@ import axios from 'axios';
 			if(this.id_galpon)
 			{
 				 this.$store.commit('loading',true);
-				axios.get('/polleras/api/galpones/?id_galpon='+this.id_galpon).then(req=>
+				axios.get('/galpones/?id_galpon='+this.id_galpon).then(req=>
 				{
 					 this.$store.commit('loading',false);
 					if(req.data.galpones.length==0)
@@ -76,6 +82,7 @@ import axios from 'axios';
 						this.type='Editar';
 						this.galpon.nombre=req.data.galpones[0].nombre;
 						this.galpon.capacidad=req.data.galpones[0].capacidad;
+						this.galpon.consumo=req.data.galpones[0].consumo;
 						
 					}
 				}).catch(AxiosCatch);
@@ -97,12 +104,12 @@ import axios from 'axios';
 				let url='',p='';
 				if(this.type=='Agregar')
 				{
-					url='/polleras/api/galpones/insertar';
+					url='/galpones/insertar';
 					p='agregado'
 
 				}else
 				{
-					url='/polleras/api/galpones/editar?id_galpon='+this.id_galpon;
+					url='/galpones/editar?id_galpon='+this.id_galpon;
 					p='editado'
 				}
 				 this.$store.commit('loading',true);
@@ -124,7 +131,8 @@ import axios from 'axios';
                              
                     }else
                     {
-                        AxiosCatch(request.data.error);
+                    	this.errores=request.data.error;
+                      
                     }  
                 }).catch(AxiosCatch);
 			}

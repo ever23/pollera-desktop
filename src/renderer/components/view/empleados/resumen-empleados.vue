@@ -60,12 +60,13 @@
            <list-asistencia :asistencia="asistencia" @change="load(null)"></list-asistencia>
               </div>
               <div class="tile" v-if="resumen('reporte')" >
-              <select class="form-control" v-model="selectpdf">
-                <option value="/polleras/api/empleados/nominapdf?"><i class="fa fa-users"></i> Nomina</option>
-                <option value="/polleras/api/empleados/pagospdf?"><i class="fa fa-dollar"></i> Pagos</option>
-                <option value="/polleras/api/empleados/asistenciapdf?"><i class="fa fa-check"></i>  Asistencia</option>
+              <select class="form-control" v-model="selectpdf" name="selectpdf">
+                <option value="">Seleccione reporte</option>
+                <option :value="basepath+'/empleados/nominapdf?'+query"><i class="fa fa-users"></i> Nomina</option>
+                <option :value="basepath+'/empleados/pagospdf?'+query"><i class="fa fa-dollar"></i> Pagos</option>
+                <option :value="basepath+'/empleados/asistenciapdf?'+query"><i class="fa fa-check"></i>  Asistencia</option>
               </select>
-                <show-pdf :src="selectpdf+query" ></show-pdf>
+                <iframe id="iframe"  :src="selectpdf" class="iframe-hide"></iframe>
               </div>
             
           </div>
@@ -105,23 +106,13 @@
                 
                 obreros:0,
                 supervisores:0,
-                selectpdf:'/polleras/api/empleados/nominapdf?',
+                selectpdf:'',
                 query:''
                
                
             }
         },
-        updated()
-        {
-          $(document).ready(e=>
-          {
-            $('#compras_alimentos').DataTable();
-            $('#consumos_alimentos').DataTable();
-            
-          });
-          
-          
-        },
+        
         created()
         {
             this.load();
@@ -129,7 +120,10 @@
         },
         computed:
         {
-         
+            basepath()
+            {
+              return this.$store.getters.localSettings.basePath;
+            }
         },
         methods:
         {
@@ -137,7 +131,7 @@
           {
             this.query=query;
              this.$store.commit('loading',true);
-            axios.get('/polleras/api/empleados/resumen?'+query)
+            axios.get('/empleados/resumen?'+query)
             .then(request=>
             {
                this.$store.commit('loading',false);
@@ -178,6 +172,10 @@
 </script>
 
 <style>
+.iframe-hide
+{
+  display: none;
+}
     .portfolio-btn
     {
       margin: -1.25rem -1.25rem;

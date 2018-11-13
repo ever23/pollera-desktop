@@ -28,30 +28,30 @@
 	          <div class="tile">
 	            <h3 class="tile-title">Venta de Huevos</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	              <div class="form-group" >
 	                  <label class="control-label">Detalles</label>
-	                  <textarea class="form-control" v-model="huevos.detalles" required placeholder="Detalles"></textarea>
+	                  <textarea class="form-control" v-model="huevos.detalles" name="detalles" required placeholder="Detalles"></textarea>
 	                  
 	                </div>
 	              <div class="form-group">
 	                  <label class="control-label">Tipo </label>
-	                 <select v-model="huevos.tipo" class="form-control">
+	                 <select v-model="huevos.tipo" name="tipo" class="form-control">
 	                 	<option value="grande">Grande</option>
 	                 	<option value="pequeño">Pequeño</option>
 	                 </select>
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Cantidad </label>
-	                  <input class="form-control" v-model="huevos.cantidad" required type="text" placeholder="Cantidad">
+	                  <input class="form-control" v-model="huevos.cantidad" name="cantidad" required type="text" placeholder="Cantidad">
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Precio Unitario</label>
-	                  <input class="form-control" v-model="huevos.costo" required type="text" :placeholder="'Precio '+settings.moneda">
+	                  <input class="form-control" v-model="huevos.costo" name="costo" required type="text" :placeholder="'Precio '+settings.moneda">
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">fecha</label>
-	                  <input class="form-control" v-model="huevos.fecha" required type="date" placeholder="fecha">
+	                  <input class="form-control" v-model="huevos.fecha" name="fecha" required type="date" placeholder="fecha">
 	                </div>
 	                
 	                  
@@ -61,7 +61,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -93,7 +93,8 @@ import {fecha} from '../../../assets/js/Date.js'
 					Submited:1
 				},
 				huevos_grandes:null,
-				huevos_pequenos:null
+				huevos_pequenos:null,
+				errores:{}
 			
 			
 
@@ -102,7 +103,7 @@ import {fecha} from '../../../assets/js/Date.js'
 		created()
 		{
 			 this.$store.commit('loading',true);
-            axios.get('/polleras/api/huevos/index')
+            axios.get('/huevos/index')
             .then(request=>
             {
                this.$store.commit('loading',false);
@@ -139,7 +140,7 @@ import {fecha} from '../../../assets/js/Date.js'
 			Enviar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/huevos/venta',this.huevos)
+				axios.post('/huevos/venta',this.huevos)
                 .then(request => 
                 {
                 	 this.$store.commit('loading',false);
@@ -157,7 +158,7 @@ import {fecha} from '../../../assets/js/Date.js'
                              
                     }else
                     {
-                        AxiosCatch(request.data.error);
+                        this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

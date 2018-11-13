@@ -33,6 +33,11 @@ export function fechaHora()
 	let time=new Date();
     return (time.getDate()>9?time.getDate():'0'+time.getDate())+' '+meses[time.getMonth()]+' '+time.getFullYear()+' '+(time.getHours()>9?time.getHours():'0'+time.getHours())+':'+(time.getMinutes()>9?time.getMinutes():'0'+time.getMinutes())+':'+(time.getSeconds()>9?time.getSeconds():'0'+time.getSeconds());
 }
+export function hora()
+{
+	let time=new Date();
+    return (time.getHours()>9?time.getHours():'0'+time.getHours())+':'+(time.getMinutes()>9?time.getMinutes():'0'+time.getMinutes());
+}
 export function DaysOfMonth(Month)
 {
 	let Result=[];

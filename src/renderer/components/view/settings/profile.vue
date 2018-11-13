@@ -8,7 +8,7 @@
                 <router-link class="btn btn-success btn-sm" :to="{name:'editar-contrasena',params:{id_usuarios:user.id_user}}"><i class="fa fa-edit"></i> Contraseña</router-link>
             </div> 
             </div>
-    <table class="table">
+    <table class="table ">
       <tbody>
         <tr>
           <th>Nombres y apellidos</th>

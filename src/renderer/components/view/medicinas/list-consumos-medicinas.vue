@@ -1,7 +1,7 @@
 <template>
 
  <div   >
-            <table class="table table-hover table-bordered" id="list_compras_medicinas">
+            <table class="table  table-hover table-bordered" ref="tabla">
              <thead >
                  <tr >
                     <td>
@@ -22,11 +22,10 @@
                      <td v-if="isRoot">
                       
                     </td>
-                    
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="item in consumos" > 
+                <tr v-for="item in consumos" ref="items"> 
                     <td>
                             {{ item.descripcion}}
                     </td>
@@ -55,8 +54,10 @@
 
 <script>
      import Del from  '../../../assets/js/delete.js'
+   import DataTable from '../../../assets/js/list-DataTable.js'
     export default 
     {
+        mixins: [DataTable],
         name:'list-compras-medicinas',
         props:['consumos','id_granjas'],
         data () {
@@ -64,15 +65,7 @@
                
             }
         },
-        created()
-        {
-          
-            
-        },
-        updated()
-        {
-           
-        },
+        
         computed:
         {
           isRoot()

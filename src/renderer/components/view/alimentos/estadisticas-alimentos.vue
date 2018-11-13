@@ -13,7 +13,7 @@
           <div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-basket fa-3x"></i>
             <div class="info">
               <h4>Consumos por mes</h4>
-              <p><b>{{ estadisticas.media_consumo | AlimFormat }}</b></p>
+              <p><b>{{ estadisticas.consumo_mes | AlimFormat }}</b></p>
             </div>
           </div>
         </div>

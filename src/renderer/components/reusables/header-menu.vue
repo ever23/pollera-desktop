@@ -1,8 +1,8 @@
 <template>
      <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="#">{{ nombre }}</a>
+    <header class="app-header"><a class="app-header__logo" href="#">{{ User.nombres }}</a>
       <!-- Sidebar toggle button-->
-        <a class="app-sidebar__toggle" href="#" @click.prevent="sidebar" aria-label="Hide Sidebar"></a>
+        <!--<a class="app-sidebar__toggle" href="#" @click.prevent="sidebar" aria-label="Hide Sidebar"></a>-->
       <!-- Navbar Right Menu-->
 
       <ul class="app-nav">
@@ -17,9 +17,13 @@
            <i :class="['fa', RelogArena]"></i>
           <i class=" datetime"  >{{ datetime }}</i>
         </li>
-         <li > <a class="app-nav__item" href="#" @click.prevent="recargar" >
+       
+         <!--<li > <a class="app-nav__item" href="#" @click.prevent="recargar" title="Recargar">
           <i class="fa fa-refresh fa-lg"></i></a>
         </li>
+         <li > <a class="app-nav__item" href="#" @click.prevent="retroceder" title="Retroceder" >
+          <i class="fa fa-rotate-left fa-lg"></i></a>
+        </li>-->
            <li >
           <dropdown-notificaciones></dropdown-notificaciones>
         </li>
@@ -72,7 +76,7 @@
 
 <script>
     import axios from 'axios'
-  
+   import {remote,ipcRenderer} from 'electron'
    import {fechaHora} from '../../assets/js/Date.js'
     export default {
         name:'header-menu',
@@ -84,7 +88,7 @@
         created()
         {
            //this.$store.commit('loading',true);
-           axios.get('/polleras/api/settings/settings').then(req=>
+           axios.get('/settings/settings').then(req=>
             {
                //this.$store.commit('loading',false);
                 this.nombre=req.data.settings.nombre;
@@ -149,12 +153,8 @@
             {
               if (isConfirm) 
               {
-                this.$store.dispatch('LogOut').then(data=>
-                  {
-                    this.$router.push({name:'login'});
-                  });
-                 
-
+                ipcRenderer.send('logout');
+               
               } 
             });
           }

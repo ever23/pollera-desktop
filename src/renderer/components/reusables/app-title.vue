@@ -53,12 +53,14 @@
             if(typeof this.title==='object')
             {
                this.breadcrumb=this.title;
+               let title=this.breadcrumb[this.breadcrumb.length-1].title;
                this.title2=this.breadcrumb[this.breadcrumb.length-1].title;
+               this.breadcrumb[this.breadcrumb.length-1].title=title.length>10?title.slice(0,30)+'...':title;
                
             }
             if(typeof this.title==='string')
             {
-                this.breadcrumb=[{title:this.title,to:this.to}];
+                this.breadcrumb=[{title:this.title.length>10?this.title.slice(0,30)+'...':this.title,to:this.to}];
                 
             }
             }

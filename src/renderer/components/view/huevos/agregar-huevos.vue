@@ -10,30 +10,30 @@
 	          <div class="tile">
 	            <h3 class="tile-title">Produccion de huevos</h3>
 	            <div class="tile-body">
-	              <form @submit.prevent="Enviar">
+	              <formulario :error="errores"   @submit.prevent="Enviar">
 	               <div class="form-group">
 	                  <label class="control-label">Detalles </label>
-	                  <textarea class="form-control" v-model="huevos.detalles" required  placeholder="Detalles"></textarea>
+	                  <textarea class="form-control" v-model="huevos.detalles" name="detalles" required  placeholder="Detalles"></textarea>
 	                  
 	                </div>
 	                <div class="form-group">
-	               	<select-galpon @change="galpon" :id_galpon="idgalpon"></select-galpon>
+	               	<select-galpon @change="galpon" :id_galpon="idgalpon" :filter="g=>g.aves>0"/>
 	               </div>
 	                <div class="form-group">
 	                  <label class="control-label">Tipo </label>
-	                 <select v-model="huevos.tipo" class="form-control">
+	                 <select v-model="huevos.tipo" name="tipo" class="form-control">
 	                 	<option value="grande">Grande</option>
 	                 	<option value="pequeño">Pequeño</option>
 	                 </select>
 	                </div>
 	                <div class="form-group">
 	                  <label class="control-label">Cantidad </label>
-	                  <input class="form-control" v-model="huevos.cantidad" required type="text" placeholder="Cantidad">
+	                  <input class="form-control" v-model="huevos.cantidad" name="cantidad" required type="text" placeholder="Cantidad">
 	                </div>
 
 	                <div class="form-group">
 	                  <label class="control-label">fecha</label>
-	                  <input class="form-control" v-model="huevos.fecha" required type="date" placeholder="fecha">
+	                  <input class="form-control" v-model="huevos.fecha" name="fecha" required type="date" placeholder="fecha">
 	                </div>
 	               
 	                 
@@ -42,7 +42,7 @@
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
 	            
 	                </div>
-	              </form>
+	              </formulario>
 	            </div>
 	            
 	          </div>
@@ -76,7 +76,7 @@ import select_galpon from '../galpones/select-galpon.vue'
 					fecha:fecha(),
 					//id_granjas:null,
 					Submited:1
-				},
+				},errores:{}
 				
 			
 
@@ -104,7 +104,7 @@ import select_galpon from '../galpones/select-galpon.vue'
 			Enviar()
 			{
 				 this.$store.commit('loading',true);
-				axios.post('/polleras/api/huevos/insertar',this.huevos)
+				axios.post('/huevos/insertar',this.huevos)
                 .then(request => 
                 {
                 	 this.$store.commit('loading',false);
@@ -122,7 +122,7 @@ import select_galpon from '../galpones/select-galpon.vue'
                              
                     }else
                     {
-                        AxiosCatch(request.data.error);
+                        this.errores=request.data.error;
                     }  
                 }).catch(AxiosCatch);
 			}

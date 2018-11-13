@@ -51,7 +51,7 @@
             select(id_granjas)
             {
               this.select_id_granjas=id_granjas;
-                axios.get('/polleras/api/medicinas/consumos'+(id_granjas?'?id_granjas='+id_granjas:''))
+                axios.get('/medicinas/consumos'+(id_granjas?'?id_granjas='+id_granjas:''))
               .then(request=>
               {
                   if(!request.data.error)

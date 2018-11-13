@@ -1,43 +1,48 @@
 <template>
 	<div>
 		<h3> Configuracion</h3>
-		<form @submit.prevent="editar">
+		<formulario :error="errores"   @submit.prevent="editar">
             <div class="form-group">
                 <label class="control-label">Nombre de granja</label>
-                <input class="form-control" v-model="config.nombre" type="text" placeholder="Ingresa nombre">
+                <input class="form-control" v-model="config.nombre" name="nombre" type="text" placeholder="Ingresa nombre">
             </div>
             <div class="form-group">
                 <label class="control-label">Porcentaje de uso minimo de los galpones</label>
-                <input class="form-control" v-model="config.usoGalpon" type="text" placeholder="Ingresa porcentaje">
+                <input class="form-control" v-model="config.usoGalpon" name="usoGalpon" type="text" placeholder="Ingresa porcentaje">
             </div>
             <div class="form-group">
                 <label class="control-label">Porcentaje de muertes de aves aceptables </label>
-                <input class="form-control" v-model="config.muertes" type="text" placeholder="Ingresa porcentaje">
+                <input class="form-control" v-model="config.muertes" name="muertes" type="text" placeholder="Ingresa porcentaje">
             </div>
               <div class="form-group ">
                 <label class="control-label">Porcentaje de produccion de huevos minima </label>
                
-                <input class="form-control" v-model="config.produccion" type="text" placeholder="Ingresa porcentaje">
+                <input class="form-control" v-model="config.produccion" name="produccion" type="text" placeholder="Ingresa porcentaje">
                  
                  
             </div>
               <div class="form-group">
                 <label class="control-label">Moneda </label>
-                <input class="form-control" v-model="config.moneda" type="text" placeholder="Ingresa moneda">
+                <input class="form-control" v-model="config.moneda" name="moneda" type="text" placeholder="Ingresa moneda">
             </div>
               <div class="form-group">
                 <label class="control-label">Unidad de medida para alimentos </label>
-                <input class="form-control" v-model="config.umalimentos" type="text" placeholder="Ingresa ">
+                <input class="form-control" v-model="config.umalimentos" name="umalimentos" type="text" placeholder="Ingresa ">
             </div>
+            <div class="form-group">
+		        <label class="control-label">Logo</label>
+		        <i class="fa fa-image"></i>
+		        <br>
+		        <input-image :src="imagen" @load="img"></input-image>
+	        </div>
            
-           <input-image label="Logo"  :src="imagen" @load="img"></input-image>
            <div class="form-group">
 	              <button class="btn btn-primary" type="submit">
 	              	<i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar
 	              </button>
 	                          
 	         </div>
-        </form>
+        </formulario>
   	</div>
 </template>
 <script>
@@ -59,7 +64,8 @@ import axios from 'axios'
 			        produccion:0,
 			        Submited:1
 				},
-				imagen:'/polleras/api/settings/imagen'
+				errores:{},
+				imagen:axios.defaults.baseURL+'/settings/imagen'
 			}
 		},
 		created()
@@ -91,7 +97,7 @@ import axios from 'axios'
 				      'content-type': 'multipart/form-data'
 				   }
 				};
-				axios.post('/polleras/api/settings',data,config).
+				axios.post('/settings',data,config).
 				then((request)=>
 				{
 					if(request.data.editado)
@@ -108,7 +114,7 @@ import axios from 'axios'
                         this.$store.dispatch('fetch');
 					}else
 					{
-						AxiosCatch(request.data.error);
+						this.errores=request.data.error;
 					}
 				}).catch(AxiosCatch);
 			}

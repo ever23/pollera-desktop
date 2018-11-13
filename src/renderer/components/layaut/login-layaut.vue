@@ -15,6 +15,9 @@
 
 <script>
   import axios from 'axios'
+  import {remote,ipcRenderer} from 'electron'
+
+   const { Menu } = remote
     export default {
         name:'login-layaut',
         components: {
@@ -27,7 +30,46 @@
         },
         created()
         { 
-           
+           this.iniMenu();
+           ipcRenderer.on('logout',(event,params)=>this.iniMenu());
+        },
+        methods:
+        {
+          iniMenu() 
+          {
+            const menu=Menu.buildFromTemplate([
+              {
+                label:"File",
+                submenu:[
+                  
+                  {type:"separator"},
+                  {
+                    label:"Salir",
+                    acelerator:"CmdOrCtrl+Q",
+                    click()
+                    {
+                      remote.app.quit()
+                    }
+                  }
+                ],
+              },
+               {
+                  label:"Editar",
+                   // acelerator:"CmdOrCtrl+U",
+                   submenu:[
+                     {
+                        label:"Api",
+                        click:()=>
+                        {
+                          this.$router.push({name:'edit-api'});
+                        }
+                     }
+                   ]
+                    
+              },
+            ]);
+            Menu.setApplicationMenu(menu);
+          }
         },
         computed:
         {

@@ -13054,7 +13054,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 @media (max-width: 768px) {
-  .app {
+  .app { 
     overflow-x: hidden;
   }
   .app .app-sidebar {
@@ -13371,9 +13371,12 @@ be a descendant of the grid when it is being dragged.
   background-color: #222d32;
   -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
           box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
-  -webkit-transition: left 0.3s ease, width 0.3s ease;
-  -o-transition: left 0.3s ease, width 0.3s ease;
-  transition: left 0.3s ease, width 0.3s ease;
+  -webkit-transition: left 0.3s ease,
+ width 0.3s ease;
+  -o-transition: left 0.3s ease,
+ width 0.3s ease;
+  transition: left 0.3s ease,
+ width 0.3s ease;
 }
 
 .app-sidebar::-webkit-scrollbar {
@@ -13449,9 +13452,12 @@ be a descendant of the grid when it is being dragged.
   padding: 12px 15px;
   font-size: 1.08em;
   border-left: 3px solid transparent;
-  -webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
-  -o-transition: border-left-color 0.3s ease, background-color 0.3s ease;
-  transition: border-left-color 0.3s ease, background-color 0.3s ease;
+  -webkit-transition: border-left-color 0.3s ease,
+ background-color 0.3s ease;
+  -o-transition: border-left-color 0.3s ease,
+ background-color 0.3s ease;
+  transition: border-left-color 0.3s ease,
+ background-color 0.3s ease;
   color: #fff;
 }
 
@@ -13533,7 +13539,7 @@ be a descendant of the grid when it is being dragged.
   transition: transform 0.3s ease, -webkit-transform 0.3s ease;
 }
 
-@media (min-width: 768px) {
+/*@media (min-width: 768px) {*/
   .sidebar-mini.sidenav-toggled .app-sidebar__user-name,
   .sidebar-mini.sidenav-toggled .app-sidebar__user-designation,
   .sidebar-mini.sidenav-toggled .treeview-indicator {
@@ -13611,7 +13617,7 @@ be a descendant of the grid when it is being dragged.
     -o-transition: visibility 0.3s ease;
     transition: visibility 0.3s ease;
   }
-}
+/*}*/
 
 .dropdown-menu {
   border-radius: 0;

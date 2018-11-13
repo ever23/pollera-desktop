@@ -3,8 +3,8 @@
 		<div class="mailbox-controls">
             <h3>Ultimas sesiones</h3> 
         </div>
-         <div class="table-responsive mailbox-messages"  >
-            <table class="table table-hover table-bordered" id="sampleTable">
+         <div class="table -responsive mailbox-messages"  >
+            <table class="table  table-hover table-bordered" ref="tabla">
              <thead >
                  <tr >
                   <td>Status</td>
@@ -22,7 +22,7 @@
                 </tr> 
              </thead>
                 <tbody>
-               <tr v-for="user in sessiones" > 
+                <tr v-for="user in sessiones" ref="items"> 
                    
                    <td > 
                    <button :class="['btn','btn-'+(user.status=='activo'?'success':'danger'),'btn-sm']" type="button" @click="cerrar(user)"><i :class="'fa fa-'+(user.status=='activo'?'unlock':'lock')"></i><i class="invisible">{{ user.status=='activo'?1:2 }}</i>
@@ -48,8 +48,10 @@
 </template>
 <script>
 import axios from 'axios'
-	export default
-	{
+	import DataTable from '../../../assets/js/list-DataTable.js'
+    export default 
+    {
+        mixins: [DataTable],
 		name:'sessiones',
 		data()
 		{
@@ -62,20 +64,13 @@ import axios from 'axios'
            
 	       this.refresh();	
 		},
-        updated()
-        {
-            $(document).ready(e=>
-            {
-                 $('#sampleTable').DataTable();
-            })
-          
-        },
+       
         methods:
         {
             refresh()
             {
                 this.$store.commit('loading',true);
-               axios.get('/polleras/api/user/sessiones')
+               axios.get('/user/sessiones')
                 .then(request=>
                 {
                      this.$store.commit('loading',false);
@@ -92,7 +87,7 @@ import axios from 'axios'
                 if(user.status!='cerrado')
                 {
                     this.$store.commit('loading',true);
-                    axios.get('/polleras/api/user/closesessione?id_session='+user.id_session).then(req=>
+                    axios.get('/user/closesessione?id_session='+user.id_session).then(req=>
                         {
                             this.$store.commit('loading',false);
                             if(req.data.cerrado)

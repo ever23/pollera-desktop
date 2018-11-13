@@ -16,7 +16,7 @@ export default new Router({
             component:Admin404  
         }
     ], 
-    mode:'history',
+   // mode:'history',
     scrollBehavior(to,from)
     {
         
