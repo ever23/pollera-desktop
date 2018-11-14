@@ -54,6 +54,8 @@
             return {
                muertes:[],
                ventas:[],
+               Cventas:null,
+               Cmuertes:null
             }
         },
         created()
@@ -100,7 +102,12 @@
               
               let Cmuertes=this.calculo(this.muertes);
               //console.log(this.meta_query.query)
-                var muertes = new Chart(this.$refs.muertes.getContext("2d")).Line({
+              if(this.Cmuertes)
+              {
+                this.Cmuertes.destroy();
+                this.Cventas.destroy();
+              }
+               this.Cmuertes = new Chart(this.$refs.muertes.getContext("2d")).Line({
                       labels: Cmuertes.labels,
                       datasets: [
                         {
@@ -117,7 +124,7 @@
                     });
                 
                let Cventas=this.calculo(this.ventas);
-                var ventas= new Chart(this.$refs.ventas.getContext("2d")).Line({
+                this.Cventas= new Chart(this.$refs.ventas.getContext("2d")).Line({
                       labels: Cventas.labels,
                       datasets: [
                         {

@@ -32,7 +32,8 @@
         props:['estadisticas','id_galpon','meta_query'],
         data () {
             return {
-              
+              Cmuertes:null,
+              Cproduccion:null
             }
         },
         created()
@@ -119,7 +120,12 @@
               let Cmuertes=this.calculo(this.estadisticas.muertes_aves);
               //let Cproduccion=this.calculo(this.estadisticas.produccion);
               //console.log(this.meta_query.query)
-              var muertes = new Chart(this.$refs.muertes.getContext("2d")).Bar({
+              if(this.Cmuertes)
+              {
+                this.Cmuertes.destroy();
+                this.Cproduccion.destroy();
+              }
+              this.Cmuertes = new Chart(this.$refs.muertes.getContext("2d")).Bar({
                       labels: Cmuertes.labels,
                       datasets: [
                         {
@@ -135,7 +141,7 @@
                       ]
                     });
                let Cproduccion=this.calculo(this.estadisticas.produccion_huevos);
-                var produccion = new Chart(this.$refs.produccion.getContext("2d")).Bar({
+                this.Cproduccion = new Chart(this.$refs.produccion.getContext("2d")).Bar({
                       labels: Cproduccion.labels,
                       datasets: [
                         {

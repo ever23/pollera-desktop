@@ -30,7 +30,7 @@ export function CalculoDay(estadistica,Month)
      item_day=estadistica.filter((item)=>
     {  
                 //console.log((new Date()).getFullYear()+'-'+Month+item.fecha.match(/\d{2}$/)[0])
-      return item.fecha===(new Date()).getFullYear()+'-'+Month+'-'+day
+      return item.fecha.match(/^\d{4}-\d{2}-\d{2}/)[0]===(new Date()).getFullYear()+'-'+Month+'-'+day
     });
     let cantidad=0;
     for(let sumar of item_day)

@@ -42,7 +42,7 @@
 <div :class="'col-md-6'">
           <div class="tile">
             <h3 class="tile-title">Produccion de Huevos Grandes</h3>
-            <div class="embed-responsive embed-responsive-16by9">
+             <div class="embed-responsive embed-responsive-16by9">
               <canvas class="embed-responsive-item" ref="produccion_grande"></canvas>
             </div>
           </div>
@@ -88,7 +88,10 @@
         props:['estadisticas','id_galpon','meta_query'],
         data () {
             return {
-              
+              Hgrande:null,
+              Hpequeno:null,
+              produccion:null,
+              ventas:null
             }
         },
         created()
@@ -99,7 +102,6 @@
         {
           estadisticas(estadisticas)
           {
-            ;
             this.ejecutar();
           }
         },
@@ -123,17 +125,25 @@
         {
           calculo(estadistica)
           {
-            
             return Format(estadistica,this.meta_query.consulta,this.meta_query.consulta=='month'?this.meta_query.query.match(/\d{2}$/)[0]:this.meta_query.query);
            
           },
           ejecutar()
             { 
-              //console.log(this.estadisticas.produccion.filter(p=>p.tipo=="pequeño"),this.estadisticas.produccion)
-               let Cproduccion_grande=this.calculo(this.estadisticas.produccion.filter(p=>p.tipo=="grande"));
-              let Cproduccion_pequeno=this.calculo(this.estadisticas.produccion.filter(p=>p.tipo=="pequeño"));
-              //console.log(this.meta_query.query)
-                var muertes = new Chart(this.$refs.produccion_grande.getContext("2d")).Line({
+              
+             //console.log(this.estadisticas.produccion.filter(p=>p.tipo=="pequeño"),this.estadisticas.produccion)
+              let Cproduccion_grande=this.calculo(this.estadisticas.produccion && this.estadisticas.produccion.filter(p=>p.tipo=="grande"));
+              let Cproduccion_pequeno=this.calculo(this.estadisticas.produccion && this.estadisticas.produccion.filter(p=>p.tipo=="pequeño"));
+            
+              if(this.Hgrande)
+              {
+
+                this.Hgrande.destroy();
+                this.Hpequeno.destroy();
+                this.produccion.destroy();
+                this.ventas.destroy();
+              }
+              this.Hgrande= new Chart(this.$refs.produccion_grande.getContext("2d")).Line({
                       labels: Cproduccion_grande.labels,
                       datasets: [
                         {
@@ -148,9 +158,10 @@
                         }
                       ]
                     });
-            
-              //console.log(this.meta_query.query)
-                var muertes = new Chart(this.$refs.produccion_pequeno.getContext("2d")).Line({
+           
+             /* console.log(Hgrande)
+              Hgrande.destroy();*/
+                this.Hpequeno = new Chart(this.$refs.produccion_pequeno.getContext("2d")).Line({
                       labels: Cproduccion_pequeno.labels,
                       datasets: [
                         {
@@ -168,7 +179,7 @@
 
               let Cproduccion=this.calculo(this.estadisticas.produccion);
               //console.log(this.meta_query.query)
-                var muertes = new Chart(this.$refs.produccion.getContext("2d")).Line({
+                this.produccion = new Chart(this.$refs.produccion.getContext("2d")).Line({
                       labels: Cproduccion.labels,
                       datasets: [
                         {
@@ -185,7 +196,7 @@
                     });
               let Cventas=this.calculo(this.estadisticas.ventas);
               //console.log(this.meta_query.query)
-                var muertes = new Chart(this.$refs.ventas.getContext("2d")).Line({
+                this.ventas = new Chart(this.$refs.ventas.getContext("2d")).Line({
                       labels: Cventas.labels,
                       datasets: [
                         {
@@ -199,7 +210,8 @@
                           data: Cventas.data
                         }
                       ]
-                    });
+                    });/**/
+
                 
               
              
