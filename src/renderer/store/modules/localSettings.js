@@ -1,6 +1,7 @@
-import $router from '../../router'
+
 import axios from 'axios'
-import { getIdToken, login, logout, isLoggedIn}  from '../../auth.js'
+
+const BASE_PATH='BASE_PATH_AXIOS';
 export default
 {
 	state:{
@@ -25,19 +26,23 @@ export default
         set(state,settings)
         {
             state.basePath=settings.basePath;
-             state.fileName=settings.fileName;
-              axios.defaults.baseURL =settings.basePath;
-           
+            axios.defaults.baseURL =settings.basePath;
+            localStorage.setItem(BASE_PATH, settings.basePath);
         },
        
     },
     actions:
     {
         
-        fetch(context,data)
+        fethcLocalSettings(context)
         { 
-             //context.commit('loading',true);
-           
+            if(!localStorage.getItem(BASE_PATH))
+            {
+                context.commit('set',{basePath:'http://localhost:8080/polleras/api'})
+            }else
+            {
+                context.commit('set',{basePath:localStorage.getItem(BASE_PATH)})
+            }
         },
         
        

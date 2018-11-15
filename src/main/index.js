@@ -13,10 +13,8 @@ if (process.env.NODE_ENV !== 'development') {
 let mainWindow
 let loginWindow
 
-const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
-
+const winURL = process.env.NODE_ENV === 'development'? `http://localhost:9080`:`file://${__dirname}/index.html`
+//const winURL =`file:///I:/Programacion/node.js/polleras-desktop/dist/electron/index.html`;
 function createWindow () {
   /**
    * Initial window options
@@ -63,7 +61,7 @@ function createWindow () {
    mainWindow.webContents.send('closed-all');
   })
   mainWindow.on('closed', () => {
-     console.log('closed')
+    // console.log('closed')
     mainWindow = null
     if(loginWindow)
     loginWindow.close();

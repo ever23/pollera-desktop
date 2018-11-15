@@ -1,7 +1,5 @@
 import $router from '../../router'
 import axios from 'axios'
-import { getIdToken, login, logout, isLoggedIn}  from '../../auth.js'
-
 export default
 { 
     
@@ -74,7 +72,7 @@ export default
                             if(request.data.login)
                             {
                                 context.commit("Login", request.data.data,data.recordar); 
-                                login(request.data.data.token);
+                               // login(request.data.data.token);
                                 //$router.push('admin');
                             }else
                             {

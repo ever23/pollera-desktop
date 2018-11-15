@@ -16,10 +16,9 @@
 </template>
 
 <script>
-import treeview from './treeview.vue'
     export default {
         name :'treeview-menu',
-        components:{treeview},
+    
         props:{
            menu:{type:Array,required:true}
         },

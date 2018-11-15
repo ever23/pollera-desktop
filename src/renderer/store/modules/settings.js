@@ -1,6 +1,5 @@
-import $router from '../../router'
+
 import axios from 'axios'
-import { getIdToken, login, logout, isLoggedIn}  from '../../auth.js'
 export default
 {
 	state:{

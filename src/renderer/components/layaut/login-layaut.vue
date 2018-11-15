@@ -5,7 +5,7 @@
     </section>
     <section class="login-content">
         <div class="logo">
-            <h1 class="text-center">{{ settings.nombre | uppercase }}</h1>
+            <!--<h1 class="text-center">{{ settings.nombre | uppercase }}</h1>-->
         </div>
 
         <router-view ></router-view>

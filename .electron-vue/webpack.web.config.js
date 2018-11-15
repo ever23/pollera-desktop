@@ -12,23 +12,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
 let webConfig = {
- proxy:{
-        '/polleras/api':{
-            target: 'http://127.0.0.1:80/polleras/api',
-            changeOrigin: true,
-            pathRewrite: {'^/polleras/api': ''}
-        },
-        '/polleras/static':{
-            target: 'http://127.0.0.1:8080/static',
-            changeOrigin: true,
-            pathRewrite: {'^/polleras/static': ''}
-        },
-        '/polleras/icono':{
-            target: 'http://127.0.0.1:80/polleras/icono',
-            changeOrigin: true,
-            pathRewrite: {'/polleras/icono': ''}
-        }   
-     },
+
   devtool: '#cheap-module-eval-source-map',
   entry: {
     web: path.join(__dirname, '../src/renderer/main.js')

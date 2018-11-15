@@ -19,8 +19,6 @@
 </template>
 
 <script>
-
-import fs from 'fs';
     export default {
         name:'recupera-pass',
         data () {
@@ -39,42 +37,28 @@ import fs from 'fs';
         {
             recuperar()
             {
-                let API=this.$store.getters.localSettings.fileName;
-                 this.$store.commit('set',{
-                    basePath:this.basePath,
-                    fileName:API
-                  })
-                fs.writeFile(API,JSON.stringify(this.$store.getters.localSettings),{},(er,d)=>{
-                    if(!er)
+                this.$store.commit('set',{basePath:this.basePath})
+                this.$store.dispatch('fetch').then(()=>
+                {
+                    swal(
                     {
-                         this.$store.dispatch('fetch').then(()=>{
-                            swal(
-                            {
-                                title: "Listo!",
-                                text: "Se ha detectado el API en esta url correctamente",
-                                type: "success",
+                        title: "Listo!",
+                        text: "Se ha detectado el API en esta url correctamente",
+                        type: "success",
 
-                            },
-                            ()=> this.$router.push({name:'login'}));
-                         }).catch(e=>
-                         {
-                            swal(
-                            {
-                                title: "Error!",
-                                text: "Es posible que la url proporcionada no sea correcta verifique e intente de nuevo",
-                                type: "warning",
-
-                            },
-                            ()=>AxiosCatch(e));
-                            
-                         });
-                         
-                       
-                    }else
+                    },
+                    ()=> this.$router.push({name:'login'}));
+                }).catch(e=>
+                {
+                    swal(
                     {
-                        AxiosCatch(err)
-                    }
+                        title: "Error!",
+                        text: "Es posible que la url proporcionada no sea correcta verifique e intente de nuevo",
+                        type: "warning",
+
+                    },()=>AxiosCatch(e));         
                 });
+               
                
 
             }

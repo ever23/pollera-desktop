@@ -4,25 +4,22 @@ import App from './App'
 import router from './router'
 import store from './store'
 import Reusables from './components/reusables/index.js'
-import fs from 'fs';
 import 'jquery'
 import 'bootstrap'
 import './assets/js/main.js'
-//import './assets/js/plugins/pace.min.js'
 import './assets/js/plugins/bootstrap-notify.min.js'
 import './assets/js/plugins/jquery.dataTables.min.js' 
 import './assets/js/plugins/dataTables.bootstrap.min.js' 
 import './assets/js/plugins/sweetalert.min.js' 
-import {remote,ipcRenderer,shell} from 'electron'
-import DefaulLocalConfig from './assets/js/defaultLocalConfig.js'
+import {remote,ipcRenderer} from 'electron'
+
 
 //shell.openItem('cmd')
 //if (process.env.NODE_ENV === 'production')
 //axios.defaults.baseURL = 'http://127.0.0.1';
-const API=__dirname+'/polleras-desktop-app.json';
-if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
-import { getIdToken, login, logout, isLoggedIn}  from './auth.js'
+store.dispatch('fethcLocalSettings');
+if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 router.beforeEach((to, from, next) => 
 {
   //return next();
@@ -32,7 +29,6 @@ router.beforeEach((to, from, next) =>
       //  console.log(store.getters.User)
         if(store.getters.User.id_user!='')
         {
-
           return next(); 
         }else
            store.dispatch('user').then(data=>
@@ -43,15 +39,12 @@ router.beforeEach((to, from, next) =>
               }
               if(data.data.login)
               {
-                 //ipcRenderer.send('login');
-                 //console.log(to, from, next,'logout','user');
+                
                  return next(); 
               }else
               {
-                
                 ipcRenderer.send('logout');
-                 return next();
-               // return next({name: 'login', query: { redirect: to.fullPath }});
+                return next();
               }
             }).catch(e=>
             {
@@ -96,17 +89,6 @@ router.beforeEach((to, from, next) =>
   
 
 });
-const mainApp=()=>
-{
-  Vue.http = Vue.prototype.$http = axios
-  Vue.config.productionTip = false
-  new Vue({
-    components: { App },
-    router,
-    store,
-    template: '<App/>'
-  }).$mount('#app')
-}
 ipcRenderer.on('closed-all',()=>
 {
   //if(!store.gettres.User.recordar)
@@ -123,24 +105,15 @@ ipcRenderer.on('logout',(event,params)=>
   //router.push({name:'login'});
   store.dispatch('LogOut').then(data=>{}).catch(AxiosCatch);
 });
-if(!fs.existsSync(API)){
-  fs.writeFile(API,JSON.stringify(DefaulLocalConfig),{},(er,d)=>console.log(er,d))
-}
-//console.log(JSON);
-fs.readFile(API, {encoding:'utf-8'},(err,data)=> {
-    if(err) {
-      //console.log(err);
-      AxiosCatch(e);
-    } else {
-      store.commit('set',{
-        basePath:JSON.parse(data).basePath,
-        fileName:API
-      })
-    //  console.log(err,data,this,fs);
-     // axios.defaults.baseURL =store.getters.localSettings.basePath;
-      mainApp();
-    }
-  });
+Vue.http = Vue.prototype.$http = axios
+Vue.config.productionTip = false
+const AppVue=new Vue({
+    components: { App },
+    router,
+    store,
+    template: '<App/>'
+}).$mount('#app')
+console.log(AppVue)
 
 /* eslint-disable no-new */
 

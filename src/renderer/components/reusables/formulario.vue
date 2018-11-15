@@ -24,7 +24,6 @@
 		{
 			error(error)
 			{
-				console.log( this.list);
 				AxiosCatch(error);
 				
 				for(let i in this.list)
