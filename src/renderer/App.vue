@@ -11,6 +11,7 @@
 </template>
 
 <script>
+//import {remote,ipcRenderer} from 'electron'
     export default 
     {
         name: 'App',
@@ -21,9 +22,23 @@
              transitionName:''
             }
         },
+        mounted()
+        {
+            //remote.getCurrentWindow().show();
+        },
         created()
         {
-          this.$store.dispatch('fetch').then(()=>{}).catch(AxiosCatch);
+            try
+            {
+
+                this.$store.dispatch('fetch').then(()=>{}).catch(AxiosCatch);
+            }catch(e)
+            {
+                console.log(e)
+                AxiosCatch(e)
+            }
+        
+
          // console.log('a')
         },
         watch: {
@@ -40,7 +55,7 @@
         },
         methods:{
             mounted()
-            {
+            { 
 
             }
         }

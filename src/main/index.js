@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow,ipcMain } from 'electron'
+import { app, BrowserWindow,ipcMain,screen} from 'electron'
 //console.log(app);
 /**
  * Set `__static` path to static files in production
@@ -12,10 +12,9 @@ if (process.env.NODE_ENV !== 'development') {
  
 let mainWindow
 let loginWindow
-
 const winURL = process.env.NODE_ENV === 'development'? `http://localhost:9080`:`file://${__dirname}/index.html`
 //const winURL =`file:///I:/Programacion/node.js/polleras-desktop/dist/electron/index.html`;
-function createWindow () {
+ function  createWindow () {
   /**
    * Initial window options
    */
@@ -24,13 +23,17 @@ function createWindow () {
     useContentSize: true,
     width: 550,
     webPreferences:{webSecurity:false},
-    show:true,
+    show:false,
+    title:"Login",
+    transparent:true,
+     nodeIntegrationInWorker:true,
+     //frame: false// ventana sin bordde
     
     //icon:__dirname+'/../../build'
   })
 //console.log(mainWindow);
-  loginWindow.loadURL(winURL+"/#/login")
-
+loginWindow.loadURL(winURL+'#login')
+ 
   loginWindow.on('closed', () => {
    
     loginWindow = null
@@ -39,13 +42,15 @@ function createWindow () {
      mainWindow = null
   })
 
-
+const {width, height} = screen.getPrimaryDisplay().workAreaSize
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: height,
     useContentSize: true,
-    width: 1000,
+    width: width,
     webPreferences:{webSecurity:false},
      show:false,
+     nodeIntegrationInWorker:true,
+      //frame: false// ventana sin bordde
     // parent:loginWindow
     //icon:__dirname+'/../../build'
   })
@@ -78,19 +83,20 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
+ 
 app.on('activate', () => {
   if (mainWindow === null && loginWindow===null) {
     createWindow()
   }
-})
+  //loginWindow.webContents.send('pushLogin');
+}) 
 
 ipcMain.on('login',(event,agrs)=>
-{
+{ 
   mainWindow.loadURL(winURL)
   mainWindow.webContents.send('login');
-  loginWindow.hide();
-  mainWindow.show();
+  mainWindow.once('show',()=> loginWindow.hide());
+  //mainWindow.show();
 });
 ipcMain.on('logout',(event,agrs)=>
 {
@@ -98,12 +104,16 @@ ipcMain.on('logout',(event,agrs)=>
   if(mainWindow.isVisible())
   {
     mainWindow.loadURL('about:blank')
+    //loginWindow.on('show',()=> loginWindow.hide());
+     //loginWindow.on('show',()=> mainWindow.hide());
     mainWindow.hide();
     loginWindow.show(); 
     loginWindow.webContents.send('logout',agrs);
   }
  
 })
+
+exports.loginWindow=loginWindow;
 /**
  * Auto Updater
  *

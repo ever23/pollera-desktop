@@ -100,7 +100,7 @@
           ejecutar()
             { 
               
-              console.log(this.consumos);
+             // console.log(this.consumos);
               let Cconsumos=this.calculo(this.consumos);
               //console.log(this.meta_query.query)
               if(this.Ccompras)

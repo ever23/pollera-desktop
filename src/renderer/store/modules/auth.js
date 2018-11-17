@@ -64,11 +64,11 @@ export default
         
         LogIn(context,data)
         { 
-             context.commit('loading',true);
+            // context.commit('loading',true);
              return axios.post('/user/',data)
                         .then(request => 
                         {
-                             context.commit('loading',false);
+                            // context.commit('loading',false);
                             if(request.data.login)
                             {
                                 context.commit("Login", request.data.data,data.recordar); 

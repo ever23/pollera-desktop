@@ -43,9 +43,9 @@
         },
         components: {
         },
-        created()
+        mounted()
         {
-          
+          remote.getCurrentWindow().show();
         },
         methods:
         {
@@ -57,11 +57,14 @@
                .then(data=>
                 {
                   
-                  this.$store.commit('loading',false);
+                  
                   if(data.login)
                   {
-                    this.user=null;
-                    this.pass=null;
+                    remote.getCurrentWindow().once('hide',()=>{
+                      this.$store.commit('loading',false)
+                      this.user=null;
+                      this.pass=null;
+                    })
                     ipcRenderer.send('login');
                     //this.$router.push(!this.redirect?{name:'inicio'}:this.redirect)
                   }else

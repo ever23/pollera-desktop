@@ -97,6 +97,7 @@
    import  '../../../assets/js/plugins/chart.js'
    import {meses} from '../../../assets/js/Date.js'
     import filter from '../../../assets/js/UserVueFilter.js'
+    import {remote,ipcRenderer} from 'electron'
     export default 
     {
        filters:filter,
@@ -117,7 +118,10 @@
                 Cventas:null
             }
         },
-      
+      mounted()
+        {
+          remote.getCurrentWindow().show();
+        },
         updated()
         {
          // console.log(this.ventas)

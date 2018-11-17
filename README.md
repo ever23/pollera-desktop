@@ -1,6 +1,9 @@
 # polleras-desktop
 
 > converson a aplicacion nativa de escritorio de [polleras](https://github.com/ever23/polleras) sirviendose de su api
+
+![login](./screnshop/login.jpg)
+![login](./screnshop/inicio.jpg)
 #### Build Setup
 
 ``` bash

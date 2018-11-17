@@ -34,9 +34,21 @@
   </div>
 </template>
 <script >
+import {remote,ipcRenderer} from 'electron'
 import axios from 'axios'
 import notify from '../../assets/js/notify.js'
-
+import icon from '../../assets/image/icon.ico'
+function WinNotification(title,body,click)
+{
+  
+    let myNotification = new Notification(title, {
+      body: body,
+      silent:true,
+      icon:icon
+    })
+    myNotification.onclick = click
+  
+}
 const TIME_NOTIFICACION=20000;
   export default
   {
@@ -142,7 +154,16 @@ const TIME_NOTIFICACION=20000;
             {
               
               for(let i in notification)
+              {
+
                 notify({title: "Notificacion: ",message:notification[i].desc_notificacion ,icon: 'fa '+notification[i].icon_notification},{type: notification[i].tipo_notificacion});
+                WinNotification("Notificacion: ",notification[i].desc_notificacion,()=> 
+                {
+                  remote.getCurrentWindow().show();
+                  this.$router.push(notification[i].href_notificacion)
+
+                })
+              }
             }
               
           },
