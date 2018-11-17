@@ -41,7 +41,7 @@
                 {
                       
                     this.data_url_icon=e.target.result;
-                    this.$emit('load',{result:event.target.files[0],dataUrl:this.data_url_icon});  
+                    this.$emit('load',{result:event.path[0].files[0],dataUrl:this.data_url_icon});  
                 };
                 lector.readAsDataURL(event.target.files[0]);
             }
