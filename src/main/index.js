@@ -12,12 +12,30 @@ if (process.env.NODE_ENV !== 'development') {
  
 let mainWindow
 let loginWindow
+let loaderWindow
 const winURL = process.env.NODE_ENV === 'development'? `http://localhost:9080`:`file://${__dirname}/index.html`
+const loaaderURL=process.env.NODE_ENV === 'development'? `http://localhost:9080/loading.html`:`file://${__dirname}/loading.html`
 //const winURL =`file:///I:/Programacion/node.js/polleras-desktop/dist/electron/index.html`;
  function  createWindow () {
   /**
    * Initial window options
    */
+   loaderWindow = new BrowserWindow({
+    height: 300,
+    useContentSize: true,
+    width: 300,
+    //webPreferences:{webSecurity:false},
+    show:false, 
+    title:"loading", 
+    //transparent:true,
+    //nodeIntegrationInWorker:true,
+    frame: false,// ventana sin bordde
+    backgroundColor:"#009688",
+    offscreen:true
+    //icon:__dirname+'/../../build'
+  })
+   loaderWindow.on('ready-to-show',()=>loaderWindow.show())
+   loaderWindow.loadURL(loaaderURL) 
    loginWindow = new BrowserWindow({
     height: 600,
     useContentSize: true,
@@ -25,7 +43,7 @@ const winURL = process.env.NODE_ENV === 'development'? `http://localhost:9080`:`
     webPreferences:{webSecurity:false},
     show:false,
     title:"Login",
-    transparent:true,
+    //transparent:true,
      nodeIntegrationInWorker:true,
      //frame: false// ventana sin bordde
     
@@ -38,7 +56,11 @@ loginWindow.loadURL(winURL+'#login')
    
     loginWindow = null
     if(mainWindow)
-     mainWindow.close();
+    {
+        loaderWindow.close()
+        mainWindow.close()
+    }
+     ;
      mainWindow = null
   })
 
@@ -58,10 +80,8 @@ const {width, height} = screen.getPrimaryDisplay().workAreaSize
  //mainWindow.maximize();
 //console.log(mainWindow);
   //mainWindow.loadURL(winURL)
-  mainWindow.on('show',()=>
-  {
-    //mainWindow.loadURL(winURL)
-  })
+  mainWindow.on('show',()=>loaderWindow.hide());
+  loginWindow.on('show',()=>loaderWindow.hide());
    mainWindow.on('close', () => {
    mainWindow.webContents.send('closed-all');
   })
@@ -69,7 +89,11 @@ const {width, height} = screen.getPrimaryDisplay().workAreaSize
     // console.log('closed')
     mainWindow = null
     if(loginWindow)
-    loginWindow.close();
+    {
+      loginWindow.close();
+      loaderWindow.close()
+    }
+    
     loginWindow=null;
   })
 }
@@ -95,7 +119,9 @@ ipcMain.on('login',(event,agrs)=>
 { 
   mainWindow.loadURL(winURL)
   mainWindow.webContents.send('login');
-  mainWindow.once('show',()=> loginWindow.hide());
+  loaderWindow.show()
+  loginWindow.hide()
+  //mainWindow.once('show',()=>loaderWindow.hinde());
   //mainWindow.show();
 });
 ipcMain.on('logout',(event,agrs)=>

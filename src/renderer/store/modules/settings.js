@@ -4,11 +4,12 @@ export default
 {
 	state:{
         nombre:'',
-		usoGalpon:0,
-		moneda:'',
-		muertes:0,
-		umalimentos:'',
-		produccion:0,
+        usoGalpon:0,
+        moneda:'',
+        muertes:0,
+        umalimentos:'',
+        produccion:0,
+        imagen:null
         
     },
     getters:
@@ -21,7 +22,8 @@ export default
                 moneda:state.moneda,
                 muertes:state.muertes,
                 umalimentos:state.umalimentos,
-                produccion:state.produccion
+                produccion:state.produccion,
+                imagen:state.imagen
             }
         },
        
@@ -36,6 +38,7 @@ export default
             state.muertes=settings.muertes;
             state.umalimentos=settings.umalimentos;
             state.produccion=settings.produccion;
+            state.imagen=settings.imagen
            // state.id_granjas=Session.id_granjas;
         },
        

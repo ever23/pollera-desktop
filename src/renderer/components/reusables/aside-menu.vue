@@ -3,7 +3,7 @@
       <div class="app-sidebar__user">
         
         <div>
-         <img class="app-sidebar__user-avatar img-fluid " :src="basepath+'/settings/imagen'" style="max-width: 90%;" alt="Logo granga">
+         <img class="app-sidebar__user-avatar img-fluid " :src="imagen" style="max-width: 90%;" alt="Logo granga">
           <p class="app-sidebar__user-name"></p><b><i> </i></b>
         </div>
       </div>
@@ -44,9 +44,10 @@
             {
                 return this.$store.getters.User;
             },
-            basepath()
+            imagen()
             {
-              return this.$store.getters.localSettings.basePath;
+              //console.log(this.$store.getters.settings)
+              return this.$store.getters.settings.imagen;
             }
         }
     }

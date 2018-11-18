@@ -65,7 +65,7 @@ import axios from 'axios'
 			        Submited:1
 				},
 				errores:{},
-				imagen:axios.defaults.baseURL+'/settings/imagen'
+				imagen:null
 			}
 		},
 		created()
@@ -76,6 +76,7 @@ import axios from 'axios'
 			this.config.produccion=this.$store.getters.settings.produccion;
 			this.config.moneda=this.$store.getters.settings.moneda;
 			this.config.umalimentos=this.$store.getters.settings.umalimentos;
+			this.imagen=this.$store.getters.settings.imagen;
 			
 		},
 		methods:
