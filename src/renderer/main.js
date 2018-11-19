@@ -18,12 +18,12 @@ import auth from './auth.js'
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
 //ipcRenderer.on('pushLogin',()=>router.push({name:'login'}));
-ipcRenderer.on('closed-all',()=>store.dispatch('LogOut').then(data=>{}).catch(AxiosCatch));
-ipcRenderer.on('login',(event,params)=>store.dispatch('user').then(data=>{}).catch(AxiosCatch));
-ipcRenderer.on('logout',(event,params)=>store.dispatch('LogOut').then(data=>{}).catch(AxiosCatch));
+ipcRenderer.on('closed-all',()=>store.dispatch('LogOut').then(data=>{}).catch(AxiosCatch))
+ipcRenderer.on('login',(event,params)=>store.dispatch('user').then(data=>{}).catch(AxiosCatch))
+ipcRenderer.on('logout',(event,params)=>store.dispatch('LogOut').then(data=>{}).catch(AxiosCatch))
 
 Vue.config.productionTip = false
-store.dispatch('fethcLocalSettings');
+store.dispatch('fethcLocalSettings')
 Vue.http = Vue.prototype.$http = axios
 router.beforeEach(auth);
 const AppVue=new Vue({
@@ -32,7 +32,6 @@ const AppVue=new Vue({
     store,
     template: '<App/>'
 }).$mount('#app')
-//console.log(AppVue)
 
 /* eslint-disable no-new */
 
