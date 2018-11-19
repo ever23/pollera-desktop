@@ -32,7 +32,7 @@ const AppVue=new Vue({
     store,
     template: '<App/>'
 }).$mount('#app')
-console.log(AppVue)
+//console.log(AppVue)
 
 /* eslint-disable no-new */
 

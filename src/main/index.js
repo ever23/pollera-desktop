@@ -140,6 +140,8 @@ ipcMain.on('logout',(event,agrs)=>
 })
 
 exports.loginWindow=loginWindow;
+exports.loaderWindow=loaderWindow;
+exports.mainWindow=mainWindow;
 /**
  * Auto Updater
  *

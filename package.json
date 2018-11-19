@@ -1,9 +1,9 @@
 {
-  "name": "my-projec2",
-  "version": "0.0.1",
-  "author": "",
-  "description": "An electron-vue project",
-  "license": null,
+  "name": "Polleras-desktop",
+  "version": "1.0",
+  "author": "Enyerber Franco",
+  "description": "Sistema de control edtadistico de produccion avicola",
+  "license": "ISC",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "CEPA",
-    "appId": "CEPA.desktop.app",
+    "productName": "polleras",
+    "appId": "polleras.desktop.app",
     "directories": {
       "output": "build"
     },
