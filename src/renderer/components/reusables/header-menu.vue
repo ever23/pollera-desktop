@@ -77,7 +77,7 @@
 <script>
     import axios from 'axios'
    import {remote,ipcRenderer} from 'electron'
-   import {fechaHora} from '../../assets/js/Date.js'
+   import {fechaHora} from '@/assets/js/Date.js'
     export default {
         name:'header-menu',
         props:['timeOnline'],

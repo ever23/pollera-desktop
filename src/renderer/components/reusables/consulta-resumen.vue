@@ -21,7 +21,7 @@
 
 <script>
 import axios from 'axios'
-import {queryDate} from '../../assets/js/Date.js'
+import {queryDate} from '@/assets/js/Date.js'
     export default {
         name :'consulta-resumen',
         

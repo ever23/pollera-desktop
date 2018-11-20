@@ -51,6 +51,11 @@ let rendererConfig = {
         test: /\.html$/,
         use: 'vue-html-loader'
       },
+       {
+        test: /loading\.html$/,
+        use: 'url-loader'
+      },
+      
       {
         test: /\.js$/,
         use: 'babel-loader',
@@ -125,20 +130,19 @@ let rendererConfig = {
     }),
      new HtmlWebpackPlugin({
       filename: 'loading.html',
-      template: path.resolve(__dirname, '../src/loading.html'),
+      template: path.resolve(__dirname, '../src/loading.ejs'),
+      renderer:false,
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,
         removeComments: true
       },
-        nodeModules: process.env.NODE_ENV !== 'production'
-        ? path.resolve(__dirname, '../node_modules')
-        : false
+        nodeModules: false
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ],
-  output: {
+  output: { 
     filename: '[name].js',
     libraryTarget: 'commonjs2',
     path: path.join(__dirname, '../dist/electron')
@@ -171,7 +175,7 @@ if (process.env.NODE_ENV === 'production') {
   rendererConfig.devtool = ''
 
   rendererConfig.plugins.push(
-    new BabiliWebpackPlugin(),
+    new BabiliWebpackPlugin(), 
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),

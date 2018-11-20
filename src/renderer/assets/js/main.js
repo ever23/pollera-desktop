@@ -1,5 +1,5 @@
 
-import store from '../../store'
+import store from '@/store'
 import notify from './notify.js'
 import {remote,ipcRenderer} from 'electron'
 window.AxiosCatch=function(data)

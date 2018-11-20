@@ -9,7 +9,6 @@
      <loader :active="loader"></loader> 
 </div>
 </template>
-
 <script>
 //import {remote,ipcRenderer} from 'electron'
     export default 
@@ -31,7 +30,7 @@
             try
             {
 
-                this.$store.dispatch('fetch').then(()=>{}).catch(AxiosCatch);
+                this.$store.dispatch('fetch').then(()=>{}).catch(AxiosCatch)
             }catch(e)
             {
                 //console.log(e)
@@ -44,26 +43,25 @@
         watch: {
           '$route' (to, from) 
           {
-//this.$store.commit('loaing',true);
           }
-        }, computed:
+        }, 
+        computed:
         {
           loader()
           {
-            return this.$store.state.loader;
+            return this.$store.state.loader
           }
         },
         methods:{
             mounted()
             { 
-
             }
         }
 
     }
 </script>
-<style src="./assets/css/main.css"></style>
-<style src="./assets/font-awesome/css/font-awesome.min.css"></style>
+<style src="@/assets/css/main.css"></style>
+<style src="@/assets/font-awesome/css/font-awesome.min.css"></style>
 
 
 

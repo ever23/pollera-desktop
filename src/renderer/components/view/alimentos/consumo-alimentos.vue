@@ -36,8 +36,8 @@
 <script>
 import axios from 'axios';
 import select_galpon from '../galpones/select-galpon.vue'
-import {fecha,hora} from '../../../assets/js/Date.js'
- import filter from '../../../assets/js/UserVueFilter.js'
+import {fecha,hora} from '@/assets/js/Date.js'
+ import filter from '@/assets/js/UserVueFilter.js'
 
 	export default
 	{

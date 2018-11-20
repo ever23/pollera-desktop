@@ -42,7 +42,7 @@
 </template>
 <script>
 import axios from 'axios';
-import {fecha} from '../../../assets/js/Date.js'
+import {fecha} from '@/assets/js/Date.js'
 import select_galpon from '../galpones/select-galpon.vue'
 	export default
 	{

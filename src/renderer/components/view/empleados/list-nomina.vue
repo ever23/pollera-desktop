@@ -72,8 +72,8 @@
 
 <script>
     import axios from 'axios'
-    import filter from '../../../assets/js/UserVueFilter.js'
-   import DataTable from '../../../assets/js/list-DataTable.js'
+    import filter from '@/assets/js/UserVueFilter.js'
+   import DataTable from '@/assets/js/list-DataTable.js'
     export default 
     {
         mixins: [DataTable],

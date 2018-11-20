@@ -78,9 +78,9 @@
 </template>
 
 <script>
-   import  '../../../assets/js/plugins/chart.js'
-   import {Format} from '../../../assets/js/DataChartFormat.js'
-   import filter from '../../../assets/js/UserVueFilter.js'
+   import  '@/assets/js/plugins/chart.js'
+   import {Format} from '@/assets/js/DataChartFormat.js'
+   import filter from '@/assets/js/UserVueFilter.js'
     export default 
     {
         filters:filter,

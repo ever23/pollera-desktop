@@ -44,9 +44,9 @@
 
 <script>
     import axios from 'axios'
-    import Del from  '../../../assets/js/delete.js'
-    import filter from '../../../assets/js/UserVueFilter.js'
-    import DataTable from '../../../assets/js/list-DataTable.js'
+    import Del from  '@/assets/js/delete.js'
+    import filter from '@/assets/js/UserVueFilter.js'
+    import DataTable from '@/assets/js/list-DataTable.js'
     export default 
     {
         mixins: [DataTable],

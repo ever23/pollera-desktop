@@ -42,7 +42,7 @@
 </template>
 <script>
 import axios from 'axios';
- import {fecha} from '../../../assets/js/Date.js'
+ import {fecha} from '@/assets/js/Date.js'
 	export default
 	{
 		name:'agregar-alimentos',

@@ -13,7 +13,7 @@
 
 <script>
  import {remote,ipcRenderer} from 'electron'
-   import notify from '../../assets/js/notify.js'
+   import notify from '@/assets/js/notify.js'
    const { Menu } = remote
     export default {
         name:'main-layaut',

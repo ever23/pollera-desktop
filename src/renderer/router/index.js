@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import admin from './admin.js'
 import login from './login.js'
-import Admin404 from '../components/view/Admin404.vue'
+import Admin404 from '@/components/view/Admin404.vue'
 Vue.use(Router);
 
 

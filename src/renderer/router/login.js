@@ -1,8 +1,8 @@
-import login from '../components/layaut/login-layaut.vue'
-import login_form from '../components/view/login/login-form.vue'
-import editApi from '../components/view/login/edit-api.vue'
-import Admin404 from '../components/view/login404.vue'
-import LockScreen from '../components/view/login/LockScreen.vue'
+import login from '@/components/layaut/login-layaut.vue'
+import login_form from '@/components/view/login/login-form.vue'
+import editApi from '@/components/view/login/edit-api.vue'
+import Admin404 from '@/components/view/login404.vue'
+import LockScreen from '@/components/view/login/LockScreen.vue'
 export default
 {
     path: '/login',

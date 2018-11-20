@@ -60,9 +60,9 @@
 </template>
 
 <script>
-    import filter from '../../../assets/js/UserVueFilter.js'
-    import Del from  '../../../assets/js/delete.js'
-   import DataTable from '../../../assets/js/list-DataTable.js'
+    import filter from '@/assets/js/UserVueFilter.js'
+    import Del from  '@/assets/js/delete.js'
+   import DataTable from '@/assets/js/list-DataTable.js'
     export default 
     {
         mixins: [DataTable],

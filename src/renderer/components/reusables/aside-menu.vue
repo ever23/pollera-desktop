@@ -12,9 +12,9 @@
     </aside>
 </template>
 <script>
-    import MenuRoot from '../../assets/menu.js'
+    import MenuRoot from '@/assets/menu.js'
     import axios from 'axios'
-   // import MenuAdmin from '../../assets/menu-admin.js'
+   // import MenuAdmin from '@/assets/menu-admin.js'
     export default {
         name:'aside-menu',
         data () {

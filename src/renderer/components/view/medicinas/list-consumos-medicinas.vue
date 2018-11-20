@@ -53,8 +53,8 @@
 </template>
 
 <script>
-     import Del from  '../../../assets/js/delete.js'
-   import DataTable from '../../../assets/js/list-DataTable.js'
+     import Del from  '@/assets/js/delete.js'
+   import DataTable from '@/assets/js/list-DataTable.js'
     export default 
     {
         mixins: [DataTable],

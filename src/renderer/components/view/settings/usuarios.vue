@@ -58,7 +58,7 @@
 </template>
 <script>
 import axios from 'axios'
-	import DataTable from '../../../assets/js/list-DataTable.js'
+	import DataTable from '@/assets/js/list-DataTable.js'
     export default 
     {
         mixins: [DataTable],

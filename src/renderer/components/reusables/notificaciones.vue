@@ -36,8 +36,8 @@
 <script >
 import {remote,ipcRenderer} from 'electron'
 import axios from 'axios'
-import notify from '../../assets/js/notify.js'
-import icon from '../../assets/image/icon.ico'
+import notify from '@/assets/js/notify.js'
+import icon from '@/assets/image/icon.ico'
 function WinNotification(title,body,click)
 {
   

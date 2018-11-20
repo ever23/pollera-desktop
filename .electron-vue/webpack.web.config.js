@@ -96,7 +96,7 @@ let webConfig = {
     }),
      new HtmlWebpackPlugin({
       filename: 'loading.html',
-      template: path.resolve(__dirname, '../src/loading.html'),
+      template: path.resolve(__dirname, '../src/loading.ejs'),
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,
@@ -131,7 +131,7 @@ if (process.env.NODE_ENV === 'production') {
   webConfig.devtool = ''
 
   webConfig.plugins.push(
-    new BabiliWebpackPlugin(),
+    new BabiliWebpackPlugin(), 
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),

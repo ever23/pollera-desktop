@@ -24,8 +24,8 @@
 </template>
 
 <script>
-   import  '../../../assets/js/plugins/chart.js'
-   import {Format} from '../../../assets/js/DataChartFormat.js'
+   import  '@/assets/js/plugins/chart.js'
+   import {Format} from '@/assets/js/DataChartFormat.js'
     export default 
     {
         name:'estadisticas-huevos',

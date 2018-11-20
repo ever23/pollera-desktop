@@ -1,4 +1,4 @@
-import store from './store'
+import store from '@/store'
 import {remote,ipcRenderer} from 'electron'
 function ConnectError()
 {
@@ -15,7 +15,7 @@ function ConnectError()
     {
         if(!is)
            remote.app.quit()                
-    }); 
+    })
 }
 export default (to, from, next)=>
 {
@@ -25,19 +25,19 @@ export default (to, from, next)=>
       //  console.log(store.getters.User)
         if(store.getters.User.id_user!='')
         {
-          return next(); 
+          return next() 
         }else
         {
            store.dispatch('user').then(data=>
             {
               if(data.data.permisos!='root' && to.matched.some(record => record.meta.root))
               {
-                 return next({name: '401',params:{location:to.fullPath}});
+                 return next({name: '401',params:{location:to.fullPath}})
               }
               if(data.data.login)
               {
                 
-                 return next(); 
+                 return next()
               }else
               {
                 ipcRenderer.send('logout');
@@ -47,12 +47,12 @@ export default (to, from, next)=>
             {
              	AxiosCatch(e)
              	ConnectError()
-                return next();
+                return next()
             });
         }    	
     }else
     {
-        return next();
+        return next()
     }
    
 }

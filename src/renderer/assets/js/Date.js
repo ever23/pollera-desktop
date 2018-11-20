@@ -1,4 +1,4 @@
-//import {fecha} from '../../../assets/js/Date.js'
+//import {fecha} from '@/assets/js/Date.js'
 
 export const meses= ["Ene", "Feb", "Mar", "Abr", "May","Jun","Jul","Ago","Set","Oct","Nob","Dic"];
 
