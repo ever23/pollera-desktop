@@ -38,8 +38,10 @@
             recuperar()
             {
                 this.$store.commit('set',{basePath:this.basePath})
+                this.$store.commit('loading',true);
                 this.$store.dispatch('fetch').then(()=>
                 {
+                     this.$store.commit('loading',false);
                     swal(
                     {
                         title: "Listo!",
@@ -50,6 +52,7 @@
                     ()=> this.$router.push({name:'login'}));
                 }).catch(e=>
                 {
+                     this.$store.commit('loading',false);
                     swal(
                     {
                         title: "Error!",

@@ -1,6 +1,6 @@
 import store from '@/store'
 import {remote,ipcRenderer} from 'electron'
-function ConnectError()
+export function ConnectError()
 {
 	swal({
         title: "Error en coneccion !",

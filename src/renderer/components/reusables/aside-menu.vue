@@ -26,16 +26,7 @@
         },
         created()
         {
-          switch(this.User.permisos)
-          {
-            case 'root':
-              this.menu=MenuRoot;
-              break;
-            case 'admin': 
-              this.menu=MenuRoot;//MenuAdmin(this.User);
-              break;
-
-          }
+          this.menu=MenuRoot;
           
         },
         computed:

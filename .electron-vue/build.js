@@ -12,6 +12,7 @@ const Multispinner = require('multispinner')
 
 const mainConfig = require('./webpack.main.config')
 const rendererConfig = require('./webpack.renderer.config')
+const rendererLoadingConfig = require('./webpack.renderer-loading.config')
 const webConfig = require('./webpack.web.config')
 
 const doneLog = chalk.bgGreen.white(' DONE ') + ' '
@@ -64,6 +65,15 @@ function build () {
     m.success('renderer')
   }).catch(err => {
     m.error('renderer')
+    console.log(`\n  ${errorLog}failed to build renderer process`)
+    console.error(`\n${err}\n`)
+    process.exit(1)
+  })
+   pack(rendererLoadingConfig).then(result => {
+    results += result + '\n\n'
+    m.success('renderer-loading')
+  }).catch(err => {
+    m.error('renderer-loading')
     console.log(`\n  ${errorLog}failed to build renderer process`)
     console.error(`\n${err}\n`)
     process.exit(1)

@@ -11,11 +11,11 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 
 const mainConfig = require('./webpack.main.config')
 const rendererConfig = require('./webpack.renderer.config')
-
+const rendererLoadingConfig = require('./webpack.renderer-loading.config')
 let electronProcess = null
 let manualRestart = false
 let hotMiddleware
-
+let hotMiddlewareLoading
 function logStats (proc, data) {
   let log = ''
 
@@ -58,6 +58,8 @@ function startRenderer () {
     compiler.hooks.done.tap('done', stats => {
       logStats('Renderer', stats)
     })
+    
+
 
     const server = new WebpackDevServer(
       compiler,
@@ -88,7 +90,62 @@ function startRenderer () {
     server.listen(9080)
   })
 }
+/**
+* Render loadin.html
+*/
+function startRendererLoading () { 
+  return new Promise((resolve, reject) => {
+    rendererLoadingConfig.entry.renderer_loading = [path.join(__dirname, 'dev-client')].concat(rendererLoadingConfig.entry.renderer_loading)
+    rendererLoadingConfig.mode = 'development'
+    const compiler = webpack(rendererLoadingConfig)
+    hotMiddlewareLoading = webpackHotMiddleware(compiler, {
+      log: false,
+      heartbeat: 2500
+    })
 
+    compiler.hooks.compilation.tap('compilation', compilation => {
+      compilation.hooks.htmlWebpackPluginAfterEmit.tapAsync('html-webpack-plugin-after-emit', (data, cb) => {
+        hotMiddlewareLoading.publish({ action: 'reload' })
+        cb()
+      })
+    })
+
+    compiler.hooks.done.tap('done', stats => {
+      logStats('Renderer-loading', stats)
+    })
+
+    const server = new WebpackDevServer(
+      compiler,
+      {
+        contentBase: path.join(__dirname, '../'),
+        quiet: true,
+        before (app, ctx) {
+          app.use(hotMiddlewareLoading)
+          ctx.middleware.waitUntilValid(() => {
+            resolve()
+          })
+        },
+        /*proxy: {
+          /*'*' : {
+            changeOrigin: true,
+            target: 'http://127.0.0.1:80/'
+          }*
+           '/polleras/api':{
+            target: 'http://127.0.0.1:80/polleras/api',
+            changeOrigin: true,
+            pathRewrite: {'^/polleras/api': ''}
+        },
+         
+        }*/
+      }
+    )
+
+    server.listen(9081)
+  })
+}
+/**
+* end renderer loading
+*/
 function startMain () {
   return new Promise((resolve, reject) => {
     mainConfig.entry.main = [path.join(__dirname, '../src/main/index.dev.js')].concat(mainConfig.entry.main)
@@ -98,6 +155,7 @@ function startMain () {
     compiler.hooks.watchRun.tapAsync('watch-run', (compilation, done) => {
       logStats('Main', chalk.white.bold('compiling...'))
       hotMiddleware.publish({ action: 'compiling' })
+      hotMiddlewareLoading.publish({ action: 'compiling' })
       done()
     })
 
@@ -190,7 +248,7 @@ function greeting () {
 function init () {
   greeting()
 
-  Promise.all([startRenderer(), startMain()])
+  Promise.all([startRenderer(),startRendererLoading(), startMain()])
     .then(() => {
       startElectron()
     })

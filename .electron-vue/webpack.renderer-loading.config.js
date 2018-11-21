@@ -24,7 +24,7 @@ let whiteListedModules = ['vue']
 let rendererConfig = {
   devtool: '#cheap-module-eval-source-map',
   entry: {
-    renderer: path.join(__dirname, '../src/renderer/main.js')
+    renderer_loading: path.join(__dirname, '../src/renderer-loading/main.js')
   },
   externals: [
     ...Object.keys(dependencies || {}).filter(d => !whiteListedModules.includes(d))
@@ -33,61 +33,32 @@ let rendererConfig = {
     rules: [
       {
         test: /\.scss$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader']
+        use: [ 'css-loader', 'sass-loader']
       },
       {
         test: /\.sass$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax']
+        use: [ 'css-loader', 'sass-loader?indentedSyntax']
       },
       {
         test: /\.less$/,
-        use: ['vue-style-loader', 'css-loader', 'less-loader']
+        use: [ 'css-loader', 'less-loader']
       },
       {
         test: /\.css$/,
-        use: ['vue-style-loader', 'css-loader']
+        use: [ 'css-loader']
       },
       {
         test: /\.html$/,
-        use: 'vue-html-loader'
-      },
-     {
-        test: /\.worker\.js$/,
-         use: {
-         loader: 'worker-loader',
-          options: { inline: false, fallback: true }
-          
-        }
+        use: 'url-loader'
       },
       {
         test: /\.js$/,
         use: 'babel-loader',
         exclude: /node_modules/
       },
-     
       {
         test: /\.node$/,
         use: 'node-loader'
-      },
-      {
-        test: /\.vue$/,
-        use: {
-          loader: 'vue-loader',
-          options: {
-            extractCSS: process.env.NODE_ENV === 'production',
-            loaders: {
-              sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-              scss: 'vue-style-loader!css-loader!sass-loader',
-              less: 'vue-style-loader!css-loader!less-loader'
-            },
-            transformToRequire: {
-              video: ['src', 'poster'],
-              source: 'src.*',
-              img: 'src',
-              image: 'xlink:href'
-            }
-          }
-        }
       },
       {
         test: /\.(png|jpe?g|gif|svg|ico)(\?.*)?$/,
@@ -124,21 +95,6 @@ let rendererConfig = {
     __filename: process.env.NODE_ENV !== 'production'
   },
   plugins: [
-
-    new VueLoaderPlugin(),
-    new MiniCssExtractPlugin({filename: 'styles.css'}),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: path.resolve(__dirname, '../src/index.ejs'),
-      minify: {
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        removeComments: true
-      },
-      nodeModules: process.env.NODE_ENV !== 'production'
-        ? path.resolve(__dirname, '../node_modules')
-        : false
-    }),/*
      new HtmlWebpackPlugin({
       filename: 'loading.html',
       template: path.resolve(__dirname, '../src/loading.ejs'),
@@ -149,10 +105,9 @@ let rendererConfig = {
         removeComments: true
       },
         nodeModules: false
-    }),*/
+    }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   output: { 
     filename: '[name].js',

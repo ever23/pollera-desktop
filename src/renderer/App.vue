@@ -11,6 +11,7 @@
 </template>
 <script>
 //import {remote,ipcRenderer} from 'electron'
+import {ConnectError} from './auth.js'
     export default 
     {
         name: 'App',
@@ -30,7 +31,10 @@
             try
             {
 
-                this.$store.dispatch('fetch').then(()=>{}).catch(AxiosCatch)
+                this.$store.dispatch('fetch').then(()=>{}).catch(e=>{
+                  AxiosCatch(e)
+                  ConnectError()
+                })
             }catch(e)
             {
                 //console.log(e)

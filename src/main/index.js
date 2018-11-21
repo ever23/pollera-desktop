@@ -15,7 +15,7 @@ const winURL = process.env.NODE_ENV === 'development'?
 `http://localhost:9080`
 :`file://${__dirname}/index.html`
 const loaaderURL=process.env.NODE_ENV === 'development'?
- `http://localhost:9080/loading.html`:
+ `http://localhost:9081/loading.html`:
  `file://${__dirname}/loading.html`
  
  function  createWindow () {
@@ -26,28 +26,30 @@ const loaaderURL=process.env.NODE_ENV === 'development'?
     height: 300,
     useContentSize: true,
     width: 300,
-    //webPreferences:{webSecurity:false},
+    //webPreferences:{ showDevTools:true},
     show:false, 
     title:"loading", 
     //transparent:true,
     //nodeIntegrationInWorker:true,
     frame: false,// ventana sin bordde
     backgroundColor:"#009688",
-    offscreen:true
+    offscreen:true,
+   
     //icon:__dirname+'/../../build'
   })
+  // loaderWindow.showDevTools();
    loaderWindow.on('ready-to-show',()=>loaderWindow.show())
    loaderWindow.loadURL(loaaderURL) 
    /**
    * ventana Login
    */
    loginWindow = new BrowserWindow({
-    height: 600,
+    height: 490,
     useContentSize: true,
-    width: 550,
+    width: 400,
     webPreferences:{webSecurity:false},
     show:false,
-    title:"Login",
+    title:"Ingresar",
     //transparent:true,
     nodeIntegrationInWorker:false,
      //frame: false// ventana sin bordde
@@ -69,6 +71,7 @@ const loaaderURL=process.env.NODE_ENV === 'development'?
   */
   const {width, height} = screen.getPrimaryDisplay().workAreaSize
   mainWindow = new BrowserWindow({
+    title:"Sistema de Control Estadístico de Producción Avicola",
     height: height,
     useContentSize: true,
     width: width,
