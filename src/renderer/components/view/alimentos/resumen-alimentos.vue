@@ -29,7 +29,7 @@
                <a href="#" :class="['nav-link',active.consumos]" @click.prevent="list('consumos')"> <i class="fa fa-shopping-basket"></i> Consumos</a>     
               </li> 
               <li class="nav-item" >
-               <a href="#" :class="['nav-link']" @click.prevent="pdf=!pdf"><i class="fa fa-file-pdf-o"></i> Reporte </a>     
+               <a href="#" :class="['nav-link']" @click.prevent="list('reporte')"><i class="fa fa-file-pdf-o"></i> Reporte </a>     
               </li> 
             </ul>
           </div>
@@ -48,8 +48,9 @@
                 <h4 class="tile-header">Consumos de Alimentos</h4>
            <list-consumos-alimentos :consumos="consumos" @change="load"/>
               </div>
+              <show-pdf v-if="resumen('reporte')" :src="src_reporte" />   
              <!--<show-pdf :src="'/alimentos/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" />  -->
-             <iframe id="iframe" v-if="pdf" :src="basepath+'/alimentos/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" @loaded="pdf=false" class="iframe-hide"></iframe>
+             <!--<iframe id="iframe" v-if="pdf" :src="basepath+'/alimentos/reporte?'+query+(id_galpon?'&id_galpon='+id_galpon:'')" @loaded="pdf=false" class="iframe-hide"></iframe>-->
           </div>
         </div>
       </div> 
@@ -58,7 +59,7 @@
 
 <script>
    import axios from 'axios'
-  
+  import path from 'path'
    import listCompras from './list-compras-alimentos.vue'
    import listConsumos from './list-consumos-alimentos.vue'
   import estadisticas from './estadisticas-alimentos.vue'
@@ -118,7 +119,10 @@
         },
         computed:
         {
-            
+            src_reporte()
+            {
+              return (this.$store.getters.localSettings.basePath+'/alimentos/reporte')+'?'+this.query+(this.id_galpon?'&id_galpon='+this.id_galpon:'')
+            },
             basepath()
             {
               return this.$store.getters.localSettings.basePath;

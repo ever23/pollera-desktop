@@ -8,7 +8,7 @@
           </div>
           <div class="form-group">
             <label class="control-label">CLAVE</label>
-            <input v-model="pass" name="pass" class="form-control" type="password" placeholder="Clave" >
+            <input v-model="pass" name="pass" class="form-control" type="password"  placeholder="Clave" >
           </div>
          <!-- <div class="form-group">
             <div class="utility">
@@ -57,11 +57,11 @@
                .then(data=>
                 {
                   
-                  
+                  this.$store.commit('loading',false)
                   if(data.login)
                   {
                     remote.getCurrentWindow().once('hide',()=>{
-                      this.$store.commit('loading',false)
+                      
                       this.user=null;
                       this.pass=null;
                     })

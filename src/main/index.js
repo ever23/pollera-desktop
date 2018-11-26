@@ -1,5 +1,6 @@
 'use strict'
 import { app, BrowserWindow,ipcMain,screen} from 'electron'
+import path from 'path'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -17,7 +18,9 @@ const winURL = process.env.NODE_ENV === 'development'?
 const loaaderURL=process.env.NODE_ENV === 'development'?
  `http://localhost:9081/loading.html`:
  `file://${__dirname}/loading.html`
- 
+ if(process.platform=='win32')
+ app.commandLine.appendSwitch('ppapi-flash-path', path.join(__dirname, 'PepperFlash/pepflashplayer.dll'))
+
  function  createWindow () {
   /**
    * ventana Loader
@@ -77,7 +80,8 @@ const loaaderURL=process.env.NODE_ENV === 'development'?
     width: width,
     webPreferences:{
       webSecurity:false,
-      nodeIntegrationInWorker: false
+      nodeIntegrationInWorker: false,
+      plugins: true
     },
     show:false,
    // nodeIntegrationInWorker:true,
@@ -85,7 +89,7 @@ const loaaderURL=process.env.NODE_ENV === 'development'?
     // parent:loginWindow
     //icon:__dirname+'/../../build'
   })
-  //mainWindow.showDevTools()
+  
   mainWindow.loadURL('about:blank')
   mainWindow.on('close', () => {
    mainWindow.webContents.send('closed-all')
