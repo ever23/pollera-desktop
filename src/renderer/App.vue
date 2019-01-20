@@ -4,18 +4,18 @@
                 <div class="cover"></div>
             </section>
      <router-view @mounted="mounted">
-          
+
      </router-view>
-     <loader :active="loader"></loader> 
+     <loader :active="loader"></loader>
 </div>
 </template>
 <script>
 //import {remote,ipcRenderer} from 'electron'
 import {ConnectError} from './auth.js'
-    export default 
+    export default
     {
         name: 'App',
-       
+
         data()
         {
             return {
@@ -40,15 +40,15 @@ import {ConnectError} from './auth.js'
                 //console.log(e)
                 AxiosCatch(e)
             }
-        
+
 
          // console.log('a')
         },
         watch: {
-          '$route' (to, from) 
+          '$route' (to, from)
           {
           }
-        }, 
+        },
         computed:
         {
           loader()
@@ -58,7 +58,7 @@ import {ConnectError} from './auth.js'
         },
         methods:{
             mounted()
-            { 
+            {
             }
         }
 
@@ -66,7 +66,3 @@ import {ConnectError} from './auth.js'
 </script>
 <style src="@/assets/css/main.css"></style>
 <style src="@/assets/font-awesome/css/font-awesome.min.css"></style>
-
-
-
-

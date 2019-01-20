@@ -3,7 +3,7 @@ import {remote,ipcRenderer} from 'electron'
 export function ConnectError()
 {
 	swal({
-        title: "Error en coneccion !",
+        title: "Error en conexion !",
         text: "Es posible que no se encuentre conectado a la red profavor revise su conexion",
         type: "error",
         showCancelButton: true,

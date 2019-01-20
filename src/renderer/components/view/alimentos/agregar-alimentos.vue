@@ -4,14 +4,14 @@
 		<div class="row">
 			<div class="col-md-8 col-sm-10 offset-md-2 offset-sm-1">
 	          <div class="tile">
-	            <h3 class="tile-title">Compra de alimentos 
+	            <h3 class="tile-title">Compra de alimentos
 	            balanceados</h3>
 	            <div class="tile-body">
 	              <formulario :error="errores"   @submit.prevent="Enviar">
 	                <div class="form-group">
 	                  <label class="control-label">Cantidad </label>
 	                  <input :class="'form-control'"   v-model="alimentos.cantidad" name="cantidad" required type="text" :placeholder="'Cantidad '+settings.umalimentos">
-	                 
+
 	                </div>
 	                 <div class="form-group">
 	                  <label class="control-label">Costo por unidad</label>
@@ -25,18 +25,18 @@
 	                  <label class="control-label">Detalles</label>
 	                  <textarea class="form-control" v-model="alimentos.detalles" name="detalles" required  placeholder="Detalles"/>
 	                </div>
-	                
-	               
+
+
 	                <div class="form-group">
 	              <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" type="button" @click.prevent="Cancelar"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</button>
-	            
+
 	                </div>
 	              </formulario>
 	            </div>
-	            
+
 	          </div>
         	</div>
-        	
+
 		</div>
 	</main>
 </template>
@@ -48,7 +48,7 @@ import axios from 'axios';
 		name:'agregar-alimentos',
 		data()
 		{
-			
+
 			return {
 				alimentos:
 				{
@@ -56,20 +56,20 @@ import axios from 'axios';
 					costo:null,
 					fecha:fecha(),
 					detalles:null,
-					
+
 					Submited:1
 				},
 				errores:{},
-			
+
 
 			}
 		},
 		computed:
 		{
 			settings()
-            {
-                return this.$store.getters.settings;
-            }
+      {
+      	return this.$store.getters.settings;
+      }
 		},
 		methods:
 		{
@@ -88,13 +88,13 @@ import axios from 'axios';
 				this.alimentos.fecha=null;
 				this.alimentos.detalles=null;
 			},
-			
-			
+
+
 			Enviar()
 			{
 				 this.$store.commit('loading',true);
 				axios.post('/alimentos/insertar',this.alimentos)
-                .then(request => 
+                .then(request =>
                 {
                 	 this.$store.commit('loading',false);
                     if(request.data.insert)
@@ -106,14 +106,14 @@ import axios from 'axios';
                             text: "se ha agregrado la compra de alimentos ",
                             type: "success",
 
-                        },
-                        ()=>this.$router.push({name:'resumen-alimentos',params:{id_granjas:this.alimentos.id_granjas}}));
-                             
-                    }else
-                    {
-                    	//this.error=request.data.error;
-                       this.errores=request.data.error;
-                    }  
+	                        },
+	                        ()=>this.$router.push({name:'resumen-alimentos',params:{id_granjas:this.alimentos.id_granjas}}));
+
+	                    }else
+	                    {
+	                    	//this.error=request.data.error;
+	                       this.errores=request.data.error;
+                    }
                 }).catch(AxiosCatch);
 			}
 		}

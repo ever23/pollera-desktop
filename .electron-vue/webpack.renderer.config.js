@@ -55,15 +55,15 @@ let rendererConfig = {
         test: /\.worker\.js$/,
          use: {
          loader: 'worker-loader',
-          options: { inline: false, fallback: true }
+          options: { inline: false, fallback: false }
           
         }
       },
-      {
+    /*  {
         test: /\.js$/,
         use: 'babel-loader',
         exclude: /node_modules/
-      },
+      },*/
      
       {
         test: /\.node$/,

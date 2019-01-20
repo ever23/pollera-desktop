@@ -14,9 +14,8 @@ import '@/assets/js/plugins/jquery.dataTables.min.js'
 import '@/assets/js/plugins/dataTables.bootstrap.min.js' 
 import '@/assets/js/plugins/sweetalert.min.js' 
 import {ipcRenderer} from 'electron'
-import auth from './auth.js'
+import auth from './auth.js' 
 if (process.env.BUILD_TARGET!=='web') Vue.use(require('vue-electron'))
-
 //ipcRenderer.on('pushLogin',()=>router.push({name:'login'}));
 Vue.config.productionTip = false
 

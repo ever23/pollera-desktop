@@ -4,15 +4,15 @@ import path from 'path'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
- */  
+ */
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
- 
+
 let mainWindow
 let loginWindow
 let loaderWindow
-const winURL = process.env.NODE_ENV === 'development'? 
+const winURL = process.env.NODE_ENV === 'development'?
 `http://localhost:9080`
 :`file://${__dirname}/index.html`
 const loaaderURL=process.env.NODE_ENV === 'development'?
@@ -30,19 +30,19 @@ const loaaderURL=process.env.NODE_ENV === 'development'?
     useContentSize: true,
     width: 300,
     //webPreferences:{ showDevTools:true},
-    show:false, 
-    title:"loading", 
+    show:false,
+    title:"loading",
     //transparent:true,
     //nodeIntegrationInWorker:true,
     frame: false,// ventana sin bordde
     backgroundColor:"#009688",
     offscreen:true,
-   
+
     //icon:__dirname+'/../../build'
   })
   // loaderWindow.showDevTools();
    loaderWindow.on('ready-to-show',()=>loaderWindow.show())
-   loaderWindow.loadURL(loaaderURL) 
+   loaderWindow.loadURL(loaaderURL)
    /**
    * ventana Login
    */
@@ -56,7 +56,7 @@ const loaaderURL=process.env.NODE_ENV === 'development'?
     //transparent:true,
     nodeIntegrationInWorker:false,
      //frame: false// ventana sin bordde
-    
+
     //icon:__dirname+'/../../build'
   })
   loginWindow.loadURL(winURL+'#login')
@@ -89,7 +89,7 @@ const loaaderURL=process.env.NODE_ENV === 'development'?
     // parent:loginWindow
     //icon:__dirname+'/../../build'
   })
-  
+
   mainWindow.loadURL('about:blank')
   mainWindow.on('close', () => {
    mainWindow.webContents.send('closed-all')
@@ -105,7 +105,7 @@ const loaaderURL=process.env.NODE_ENV === 'development'?
     loginWindow=null
   })
   /**
-  * hide loader 
+  * hide loader
   */
   mainWindow.on('show',()=>loaderWindow.hide())
   loginWindow.on('show',()=>loaderWindow.hide())
@@ -120,30 +120,30 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
- 
+
 app.on('activate', () => {
   if (mainWindow === null && loginWindow===null) {
     createWindow()
   }
   //loginWindow.webContents.send('pushLogin');
-}) 
+})
 /**
-* oculta la ventana login y muestra la ventana principal 
+* oculta la ventana login y muestra la ventana principal
 */
 ipcMain.on('login',(event,agrs)=>
-{ 
+{
   mainWindow.loadURL(winURL)
   mainWindow.webContents.send('login')
   loaderWindow.show()
   loginWindow.hide()
- 
+
 })
 /**
 *
 */
 ipcMain.on('logout',(event,agrs)=>
 {
- 
+
   if(mainWindow.isVisible())
   {
     mainWindow.loadURL('about:blank')
@@ -151,7 +151,7 @@ ipcMain.on('logout',(event,agrs)=>
     loginWindow.show()
     loginWindow.webContents.send('logout',agrs)
   }
- 
+
 })
 
 exports.loginWindow= loginWindow
